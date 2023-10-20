@@ -13,7 +13,7 @@
         </div>
     </nav>
     <div class="authorization-panel columns is-centered">
-        <form class="box is-justify-content-center">
+        <form class="box is-justify-content-center" method="post">
             <div class="field has-text-centered">
                 <h5 class="title is-4 py-3">Войти с помощью ЭИОС</h5>
             </div>
@@ -28,7 +28,8 @@
                 </div>
             </div>
             <div class="field has-text-centered">
-                <button class="button enter-button">Вход</button>
+                {% csrf_token %}
+                <button type="submit" class="button enter-button">Вход</button>
             </div>
         </form>
     </div>
