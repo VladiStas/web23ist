@@ -1,0 +1,474 @@
+<!--1. Цвет "Главная" и "Проекты" при наведении на них курсора
+    2. Переместить ФИО
+    3. Оценку преподавателя и самостоятельную оценку сделать по центру
+    4. Вторую колонку (место учёбы, год поступления и тд) подвинуть чуть ниже и левее
+-->
+<!DOCTYPE html>
+<html class="has-background-grey-lighter">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profile</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar ">
+      <div class="navbar-brand">
+        
+          <a class="navbar-item ">
+            <img src="http://istvstu.ru/img/svg/logo-header.svg" class="nav__logo-image" width="65" height="74"alt="Logo" >
+			<div class="tekst_sverhu_kartinki">Кафедра ЦТУАС</div>
+          </a>
+        <a
+          class="navbar-item has-background has-text-black"
+          href="главная-страница-ссылка"
+          >Главная</a
+        >
+        <a
+          class="navbar-item has-background has-text-black"
+          href="страница-проекты-ссылка"
+          >Профиль</a
+        >
+        <a
+          class="navbar-item has-background has-text-black"
+          href="страница-проекты-ссылка"
+          >Проекты</a
+        >
+        <a
+          class="navbar-item has-background has-text-black"
+          href="страница-проекты-ссылка"
+          >Преподавательский состав</a
+        >
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item is-hoverable">
+          <div class="field">
+            <div class="control">
+              <input
+                class="input input-field"
+                type="search"
+                placeholder="Поиск"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <a class="profile-href has-text-black " href="ссылка-на-профиль">Имя Фамилия</a>
+        </div>
+        <div class="navbar-item ">
+          <a href="ссылка-на-профиль">
+		  <img class="is-rounded" src="https://img.icons8.com/?size=80&id=sTe2gqf95B1e&format=png" alt="Фото пользователя">
+            
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <nav class="breadcrumb is-centered pt-4 has-text-dark" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="#skills">Скиллы</a></li>
+        <li><a href="#study">Учебные предметы</a></li>
+        <li><a href="#project">Участие в проектах</a></li>
+        <li><a href="#course">Пройденные курсы</a></li>
+        <li><a href="#publication">Научные публикации</a></li>
+        <li><a href="#reward">Награды</a></li>
+      </ul>
+    </nav>
+    <div class="columns py-6 px-6">
+      <div class="column is-one-quarter">
+        <img
+          src="https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png"
+          alt="Фото пользователя"
+        />
+      </div>
+      
+      <div class="column">
+        <h5 class="title is-2">Иванов Иван Иванович</h5>
+        <div class="columns">
+          <div class="column">
+            <div class="py-2">Почта:</div>
+            <div class="py-2">Телефон:</div>
+          </div>
+          <div class="column">
+            <div class="py-2">ivanov@gmail.com</div>
+            <div class="py-2">+7 123 456 78 90</div>
+          </div>
+          <div class="column">
+            <div class="py-2">Место учёбы:</div>
+            <div class="py-2">Год поступления:</div>
+            <div class="py-2">Факультет:</div>
+            <div class="py-2">Курс:</div>
+            <div class="py-2">Группа:</div>
+          </div>
+          <div class="column">
+            <div class="py-2">ВолгГТУ</div>
+            <div class="py-2">2020</div>
+            <div class="py-2">ФАиГР</div>
+            <div class="py-2">4</div>
+            <div class="py-2">ИСТ-1-20</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-quarter">
+        <button class="button portfolio-button">Настроить профиль</button>
+      </div>
+    </div>
+    <div class="columns py-4 px-4">
+      <div class="column">
+        <div class="text">О себе: люблю сухой корм с курицей</div>
+      </div>
+    </div>
+    <div class="row table-row">
+      <div class="field has-text-left">
+        <h5 id="skills" class="title is-3 py-3 px-4">Скиллы <button id="addSkill">+</button></h5>
+      </div>
+
+      <div class="profile-tabels columns is-left">
+        <table class="table study-obj is-bordered is-centered">
+          <thead>
+            <tr>
+              <th><abbr title="title">Скилл</abbr></th>
+              <th><abbr title="date">Процент знаний</abbr></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>C#</td>
+              <td>87%</td>
+            </tr>
+            <tr>
+              <td>C++</td>
+              <td>75%</td>
+            </tr>
+            <tr>
+              <td>Python</td>
+              <td>80%</td>
+            </tr>
+            <tr>
+              <td>Java</td>
+              <td>60%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+    <div class="row table-row">
+      <div class="field has-text-left">
+        <h5 id="study" class="title is-3 py-3 px-4">Учебные предметы <button id="addObject">+</button></h5>
+      </div>
+
+      <div class="profile-tabels columns is-left">
+        <table class="table study-obj1 is-centered">
+          <thead>
+            <tr>
+              <th><abbr title="title">Работа</abbr></th>
+              <th>
+                <abbr title="score has-text-centered"
+                  >Оценка преподавателя</abbr
+                >
+              </th>
+              <th><abbr title="my-score">Самостоятельная оценка</abbr></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Работа 1</td>
+              <td>90</td>
+              <td>Интересно</td>
+            </tr>
+            <tr>
+              <td>Работа 2</td>
+              <td>80</td>
+              <td>Неинтересно</td>
+            </tr>
+            <tr>
+              <td>Работа 3</td>
+              <td>76</td>
+              <td>Неинтересно</td>
+            </tr>
+            <tr>
+              <td>Работа 4</td>
+              <td>100</td>
+              <td>Неинтересно</td>
+            </tr>
+            <tr>
+              <td>Работа 5</td>
+              <td>98</td>
+              <td>Интересно</td>
+            </tr>
+            <tr>
+              <td>Работа 6</td>
+              <td>85</td>
+              <td>Интересно</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="rows">
+      <div class="row table-row">
+        <div class="field has-text-left">
+          <h5 id="project" class="title is-3 py-3 px-4">Участие в проектах <button id="addProject">+</button></h5>
+        </div>
+
+        <div class="profile-tabels columns is-left">
+          <table class="table is-bordered study-obj2 is-centered">
+            <thead>
+              <tr>
+                <th><abbr title="title">Название проекта</abbr></th>
+                <th><abbr title="date">Дата</abbr></th>
+                <th><abbr title="link">GitHub</abbr></th>
+                <th><abbr title="description">Описание проекта</abbr></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Умный дом</td>
+                <td>12.09.2021-27.12.2021</td>
+                <td>https://github.com/</td>
+                <td>В данном проекте представлен пример системы Умный дом</td>
+              </tr>
+              <tr>
+                <td>Проект</td>
+                <td>Дата работы</td>
+                <td>Ссылка на проект</td>
+                <td>Краткое описание</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row table-row">
+        <div class="field has-text-left">
+          <h5 id="course" class="title is-3 py-3 px-4">Пройденные курсы <button id="addCourse">+</button></h5>
+        </div>
+
+        <div class="profile-tabels columns is-left">
+          <table class="table study-obj3 is-bordered is-centered">
+            <thead>
+              <tr>
+                <th><abbr title="title">Название курса</abbr></th>
+                <th><abbr title="date">Дата</abbr></th>
+                <th><abbr title="certificate">Сертификат</abbr></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Изучение Pyton для чайников</td>
+                <td>22.03.2022-22.09.2022</td>
+                <td>*ПДФ-файл*</td>
+              </tr>
+              <tr>
+                <td>Курс</td>
+                <td>Дата прохождения</td>
+                <td>Сертификат об обучении</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row table-row">
+      <div class="field has-text-left">
+        <h5 id="publication" class="title is-3 py-3 px-4">Научные публикации</h5>
+      </div>
+      <div class="content">
+        <ol type="1">
+          <li>
+            Литвенкова И.А. Экология городской среды: урбоэкология. Издательство
+            УО «ВГУ им.ю П.М.Машерова», 2005. 163 с.
+          </li>
+          <li>
+            Байтелова А. И., Гарицкая М. Ю., Чекмарева О. В. Экологические
+            особенности городской среды. 2012. 216 с.
+          </li>
+          <li>
+            Ле Минь Туан, Шукуров И.С., Гельманова М.О., Слесарев М.Ю. расчет
+            интенсивности теплового острова в мегаполисах с помощью
+            моделирования в программе ENVI-met // Вестник МГСУ. 2020. Т. 15.
+            Вып. 9. С. 1262–1273.
+          </li>
+        </ol>
+      </div>
+      <div class="field has-text-left">
+        <h5 id="reward" class="title is-3 py-3 px-4">Награды</h5>
+      </div>
+      <div class="content">
+        <ol type="1">
+          <li>Диплом 1 место на конференции</li>
+          <li>Диплом 2 место на конференции</li>
+          <li>Диплом 3 место на конференции</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+</html>
+<style>
+  body {
+    background: linear-gradient(#FFFFFF, #195ae02b); /* Замените #FFA500 на цвет, который вы хотите использовать */
+    margin: 0; /* Убираем отступы по умолчанию */
+    padding: 0; /* Убираем внутренние отступы по умолчанию */
+    width: 100%; /* Растягиваем по ширине на 100% экрана */
+    height: 100%; /* Растягиваем по высоте на 100% высоты экрана */
+	}
+  .input-field {
+    width: 500px;
+  }
+  .profile-href {
+    color: white;
+  }
+  .profile-href:hover {
+    color: #faab36;
+  }
+  .portfolio-button {
+    width: 70%;
+    background-color: #427cf329;
+  }
+  .profile-tabels {
+    margin: 20px;
+  }
+  .table-row {
+    padding-bottom: 20px;
+  }
+  .study-obj {
+    min-width: 100%;
+  }
+  .study-obj1 {
+    min-width: 100%;
+  }
+  .study-obj2 {
+    min-width: 100%;
+  }
+  .study-obj3 {
+    min-width: 100%;
+  }
+</style>
+<script>
+  document.querySelector('a[href^="#"]').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const targetId = this.getAttribute('href').substring(1);
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const addButton = document.getElementById("addSkill");
+    const table = document.querySelector(".table.study-obj");
+    let rowCount = 0;
+
+    addButton.addEventListener("click", function() {
+      rowCount++;
+      const newRow = table.insertRow();
+      const cell1 = newRow.insertCell(0);
+      const cell2 = newRow.insertCell(1);
+
+      cell1.contentEditable = true;
+      cell2.contentEditable = true;
+
+      cell1.addEventListener("input", function() {
+      });
+
+      cell2.addEventListener("input", function() {
+      });
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const addButton = document.getElementById("addObject");
+    const table = document.querySelector(".table.study-obj1");
+    let rowCount = 0;
+
+    addButton.addEventListener("click", function() {
+      rowCount++;
+      const newRow = table.insertRow();
+      const cell1 = newRow.insertCell(0);
+      const cell2 = newRow.insertCell(1);
+      const cell3 = newRow.insertCell(2);
+
+      cell1.contentEditable = true;
+      cell2.contentEditable = true;
+      cell3.contentEditable = true;
+
+      cell1.addEventListener("input", function() {
+      });
+
+      cell2.addEventListener("input", function() {
+      });
+
+      cell3.addEventListener("input", function() {
+      });
+    });
+  });
+  document.addEventListener("DOMContentLoaded", function() {
+    const addButton = document.getElementById("addProject");
+    const table = document.querySelector(".table.study-obj2");
+    let rowCount = 0;
+
+    addButton.addEventListener("click", function() {
+      rowCount++;
+      const newRow = table.insertRow();
+      const cell1 = newRow.insertCell(0);
+      const cell2 = newRow.insertCell(1);
+      const cell3 = newRow.insertCell(2);
+      const cell4 = newRow.insertCell(3);
+
+      cell1.contentEditable = true;
+      cell2.contentEditable = true;
+      cell3.contentEditable = true;
+      cell4.contentEditable = true;
+
+      cell1.addEventListener("input", function() {
+      });
+
+      cell2.addEventListener("input", function() {
+      });
+
+      cell3.addEventListener("input", function() {
+      });
+
+      cell4.addEventListener("input", function() {
+      });
+    });
+  });
+  document.addEventListener("DOMContentLoaded", function() {
+    const addButton = document.getElementById("addCourse");
+    const table = document.querySelector(".table.study-obj3");
+    let rowCount = 0;
+
+    addButton.addEventListener("click", function() {
+      rowCount++;
+      const newRow = table.insertRow();
+      const cell1 = newRow.insertCell(0);
+      const cell2 = newRow.insertCell(1);
+      const cell3 = newRow.insertCell(2);
+
+
+      cell1.contentEditable = true;
+      cell2.contentEditable = true;
+      cell3.contentEditable = true;
+
+      cell1.addEventListener("input", function() {
+      });
+
+      cell2.addEventListener("input", function() {
+      });
+
+      cell3.addEventListener("input", function() {
+      });
+    });
+  });
+</script>
