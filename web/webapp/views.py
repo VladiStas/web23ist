@@ -21,20 +21,32 @@ class UserLogoutView(LogoutView):
     next_page = 'home_visit'
 
 
-def index(request):
-    context = {
-        'products': ['Яблоко', 'Банан', 'Апельсин'],
-    }
-    return render(request, 'webapp/index.html', context)
-
-
-@login_required()
 def profile(request):
     return render(request, 'webapp/profile.html')
 
 
 def home_visit(request):
     return render(request, 'webapp/home_visit.html')
+
+
+def home_settings(request):
+    return render(request, 'webapp/home_settings.html')
+
+
+def home_user(request):
+    return render(request, 'webapp/home_user.html')
+
+
+def settings(request):
+    return render(request, 'webapp/settings.html')
+
+
+def home(request):
+    return render(request, 'webapp/home.html')
+
+
+def profile_user(request):
+    return render(request, 'webapp/profile_user.html')
 
 
 def authorization(request):

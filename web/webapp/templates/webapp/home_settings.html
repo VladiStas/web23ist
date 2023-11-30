@@ -1,0 +1,75 @@
+{% extends 'webapp/base.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<!--TODO: JINJA сюда              -->
+<div class="columns py-6 px-6">
+    <div class="column is-one-quarter">
+        <img
+          src="https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png"
+          alt="Фото пользователя"
+        />
+      </div>
+      <div class="column">
+        <h5 class="title is-2">Иванов Иван Иванович</h5>
+        <div class="columns">
+          <div class="column">
+            <div class="py-2">Почта:</div>
+            <div class="py-2">Телефон:</div>
+          </div>
+          <div class="column">
+            <input
+            class="input"
+            type="email"
+            placeholder="Почта"
+            />
+            <input
+            class="input"
+            type="text"
+            placeholder="Номер телефона"
+            />
+            </div>
+          <div class="column">
+            <div class="py-2">Место учёбы:</div>
+            <div class="py-2">Год поступления:</div>
+            <div class="py-2">Факультет:</div>
+            <div class="py-2">Курс:</div>
+            <div class="py-2">Группа:</div>
+          </div>
+          <div class="column">
+            <input
+            class="input"
+            type="text"
+            placeholder="Место учёбы"
+            />
+            <input
+            class="input"
+            type="text"
+            placeholder="Год поступления"
+            />
+            <input
+            class="input"
+            type="text"
+            placeholder="Факультет"
+            />
+            <input
+            class="input"
+            type="number"
+            placeholder="Курс"
+            />
+            <input
+            class="input"
+            type="text"
+            placeholder="Группа"
+            />
+          </div>
+        </div>
+      </div>
+</div>
+<div class="columns py-4 px-4">
+    <div class="column">
+        <textarea class="textarea" placeholder="О себе" rows="10"></textarea>      
+      </div>
+</div>
+{% endblock %}
