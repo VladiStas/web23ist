@@ -1,0 +1,17 @@
+{% extends 'webapp/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <div class="columns custom-padding">
+      <div class="column is-7 custom-padding" style="font-size: 22px;">
+        <p class="has-text-weight-bold">{{ department_name }}</p>
+        <p style="font-size: 14px;">{{ department_info }}</p>
+        <br>
+      </div>
+      <div class="column is-6 is-offset-1 is-4 custom-padding">
+        <img src="{{ department_logo }}" alt="Лого" style="width: 40%;">
+      </div>
+    </div>
+{% endblock %}
+

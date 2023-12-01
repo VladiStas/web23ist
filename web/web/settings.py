@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-73=as^227og8_bm9(lg89n$ehl!qz85m&2t+1fg023c&^uylt2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'appdb',
+        'USER': 'pguser',
+        'PASSWORD': 'pgpassword',
+        'HOST': '192.168.68.107',
+        'PORT': 5432,
     }
 }
 
@@ -123,5 +127,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'home_visit'
+LOGIN_REDIRECT_URL = 'profile_user'
 LOGIN_URL = 'login'

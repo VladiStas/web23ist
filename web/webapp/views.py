@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse
+from .models import user
 from .forms import UserLoginForm
 
 
 class UserLoginView(SuccessMessageMixin, LoginView):
     form_class = UserLoginForm
     template_name = 'webapp/authorization.html'
-    next_page = 'profile'
+    next_page = 'profile_user'
     success_message = 'Добро пожаловать на сайт!'
 
     def get_context_data(self, **kwargs):
@@ -19,10 +21,6 @@ class UserLoginView(SuccessMessageMixin, LoginView):
 
 class UserLogoutView(LogoutView):
     next_page = 'home_visit'
-
-
-def profile(request):
-    return render(request, 'webapp/profile.html')
 
 
 def home_visit(request):
@@ -45,8 +43,20 @@ def home(request):
     return render(request, 'webapp/home.html')
 
 
-def profile_user(request):
-    return render(request, 'webapp/profile_user.html')
+def any_page(request, page_name):
+    return render(request, f'webapp/{page_name}.html')
+
+
+@login_required()
+def profile_user(request, id):
+    users = user.objects.get(id=id)
+    return render(request, f'webapp/profile_user/{id}.html', {"users":users})
+    # return redirect(reverse('webapp/profile_user/{id}.html', f'webapp/profile_user/{id}.html', {"users":users}))
+
+
+def home_project(request):
+    users = user.objects.get(id=id)
+    return render(request, 'webapp/home_project.html')
 
 
 def authorization(request):
