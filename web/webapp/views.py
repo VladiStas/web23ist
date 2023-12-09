@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
@@ -34,6 +35,13 @@ def main(request):
 def projects_template(request):
     data = Project.objects.all()
     return render(request, 'webapp/projects.html', {'data': data, 'title': 'Страница проектов'})
+
+
+@login_required()
+def concrete_project(request, project_id):
+    data = Project.objects.all()
+    return HttpResponse(f"{project_id}")
+    #return render(request, 'webapp/projects.html', {'data': data, 'title': 'Страница проекта'})
 
 
 @login_required()

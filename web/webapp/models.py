@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class user(models.Model):
@@ -26,5 +27,5 @@ class Project(models.Model):
     about_project = models.CharField(max_length=600)
     project_admin = models.IntegerField()
 
-    def __str__(self):
-        return 0
+    def get_url(self):
+        return reverse('project', kwargs={'project_id': self.pk})
