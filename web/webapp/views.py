@@ -31,6 +31,14 @@ def main(request):
     return render(request, 'webapp/main.html', {'title': 'Главная'})
 
 
+def user(request):
+    return render(request, 'webapp/user.html', {'title': 'Мой профиль'})
+
+
+def profile_user_settings(request):
+    return render(request, 'webapp/user-settings.html', {'title': 'Настройка профиля'})
+
+
 @login_required()
 def projects_template(request):
     data = Project.objects.all()
@@ -43,9 +51,9 @@ def concrete_project(request, project_id):
     return HttpResponse(f"{project_id}")
     #return render(request, 'webapp/projects.html', {'data': data, 'title': 'Страница проекта'})
 
-
-@login_required()
-def profile_user(request, id):
-    users = user.objects.get(id=id)
-    return render(request, f'webapp/profile_user/{id}.html', {"users": users})
-    # return redirect(reverse('webapp/profile_user/{id}.html', f'webapp/profile_user/{id}.html', {"users":users}))
+#
+# @login_required()
+# def profile_user(request, id):
+#     users = user.objects.get(id=id)
+#     return render(request, f'webapp/profile_user/{id}.html', {"users": users})
+#     # return redirect(reverse('webapp/profile_user/{id}.html', f'webapp/profile_user/{id}.html', {"users":users}))
