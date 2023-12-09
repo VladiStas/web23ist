@@ -1,0 +1,85 @@
+{% extends 'webapp/base.html' %}
+
+{% endblock %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+  <!-- Раздел фильтра -->
+<div class="section">
+    <div class="columns is-centered">
+        <div class="column is-4">
+            <label for="category">Факультет:</label>
+            <select id="category">
+                <option value="all">Все</option>
+                <option value="category1">ФАиГР</option>
+                <option value="category2">ФСиЖКХ</option>
+                <option value="category3">ФТиСТБ</option>
+            </select>
+        </div>
+        <div class="column is-3">
+            <label for="course">Курс:</label>
+            <select id="course">
+                <option value="all">Все</option>
+                <option value="course1">1</option>
+                <option value="course2">2</option>
+                <option value="course3">3</option>
+                <option value="course4">4</option>
+            </select>
+        </div>
+        <div class="column is-3">
+            <label for="technology">Стек технологий:</label>
+            <select id="technology">
+                <option value="all">Все</option>
+                <option value="tech1">c++</option>
+                <option value="tech2">python</option>
+                <option value="tech3">java script</option>
+                <option value="tech4">c#</option>
+            </select>
+        </div>
+    </div>
+    <div class="field has-text-centered">
+        <button class="button enter-button">Применить</button>
+    </div>
+</div>
+
+  </div>
+
+  <!-- Раздел контента -->
+  <div class="section">
+    <div class="columns is-multiline">
+      {% for project in projects %}
+        <div class="column is-2">
+          <div class="card">
+            <div class="card-image">
+          <figure class="image is-4by3">
+            <img
+              src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg"
+              alt="Placeholder image"
+            />
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left"></div>
+            <div class="media-content">
+              <p class="title is-4">Сайт с котиками</p>
+            </div>
+          </div>
+
+          <div class="content">
+            Сайт разработанный для котиков Сайт разработанный для котиков
+          </div>
+          <div class="content">
+            Ключевые слова: питон
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a href="#" class="card-footer-item">Подробнее</a>
+        </footer>
+      </div>
+          </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

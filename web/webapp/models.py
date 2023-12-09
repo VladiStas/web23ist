@@ -13,3 +13,18 @@ class user(models.Model):
     email = models.CharField(max_length=128)
     telegram_nick = models.CharField(max_length=128)
     hide_contacts = models.BooleanField()
+
+
+class Project(models.Model):
+
+    class Meta:
+        db_table = "projects"
+        verbose_name = "Проекты"
+
+    project_name = models.CharField(max_length=100)
+    status = models.CharField(max_length=15)
+    about_project = models.CharField(max_length=600)
+    project_admin = models.IntegerField()
+
+    def __str__(self):
+        return 0

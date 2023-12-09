@@ -1,8 +1,32 @@
 <html class="has-background-grey-lighter">
+<style>
+ body {
+    background: linear-gradient(#FFFFFF, #195ae02b); /* Замените #FFA500 на цвет, который вы хотите использовать */
+    margin: 0; /* Убираем отступы по умолчанию */
+    padding: 0; /* Убираем внутренние отступы по умолчанию */
+    width: 100%; /* Растягиваем по ширине на 100% экрана */
+    height: 100vh; /* Растягиваем по высоте на 100% высоты экрана */
+	}
+	.custom-padding {
+            padding: 30px; /* Измените значение отступа по своему усмотрению */
+        }
+    .box{
+        min-width: 500px;
+        min-height: 200px;
+		
+    }
+    .authorization-panel{
+        padding-top: 150px;
+    }
+    .enter-button{
+        background-color: #427cf329;
+        width: 100px;
+    }
+</style>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>{% block title %}Title{% endblock %}</title>
+    <title>{{title}}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"/>
 </head>
 <body>
@@ -17,7 +41,7 @@
         <!--TODO: JINJA сюда              -->
         <a
                 class="navbar-item has-background has-text-black"
-                href="главная-страница-ссылка"
+                href="{% url 'main' %}"
         >Главная</a
         >
         <!--TODO: JINJA сюда              -->
@@ -29,15 +53,10 @@
         <!--TODO: JINJA сюда              -->
         <a
                 class="navbar-item has-background has-text-black"
-                href="страница-проекты-ссылка"
+                href="{% url 'projects' %}"
         >Проекты</a
         >
-        <!--TODO: JINJA сюда              -->
-        <a
-                class="navbar-item has-background has-text-black"
-                href="/home_project/"
-        >Преподавательский состав</a
-        >
+        
     </div>
     <div class="navbar-end">
         <div class="navbar-item is-hoverable">
@@ -51,9 +70,11 @@
                 </div>
             </div>
         </div>
-        <div class="navbar-item">
+
+        <ul class="navbar-item">
             <!--TODO: JINJA сюда              -->
-            <a class="profile-href has-text-black " href="ссылка-на-профиль">Имя Фамилия</a>
+			 {% if request.user.is_authenticated %}
+            <li class="profile-href has-text-black " href="ссылка-на-профиль">{{user.username}}</li>
         </div>
         <div class="navbar-item ">
             <!--TODO: JINJA сюда              -->
@@ -61,7 +82,11 @@
                 <img class="is-rounded" src="https://img.icons8.com/?size=80&id=sTe2gqf95B1e&format=png"
                      alt="Фото пользователя">
             </a>
-        </div>
+			 <li class="nav-item has-text-black"><a href="{% url 'logout' %}" class="nav-link">Выход</a></li>
+			{% else %}
+			 <li class="nav-item has-text-black"><a href="{% url 'login' %}" class="nav-link">Войти</a></li>
+        {% endif %}
+      </ul>
     </div>
 </nav>
 
