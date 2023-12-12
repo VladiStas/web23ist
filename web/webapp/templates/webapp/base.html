@@ -70,7 +70,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
         <ul class="navbar-item">
             <!--TODO: JINJA сюда              -->
 			 {% if request.user.is_authenticated %}
@@ -86,7 +86,7 @@
 			{% else %}
 			 <li class="nav-item has-text-black"><a href="{% url 'login' %}" class="nav-link">Войти</a></li>
         {% endif %}
-      </ul>
+        </ul>
     </div>
 </nav>
 

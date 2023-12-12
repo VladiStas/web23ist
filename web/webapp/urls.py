@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
+from django.views.generic import RedirectView
 
 from .views import UserLoginView, UserLogoutView
 
@@ -12,4 +13,5 @@ urlpatterns = [
     path('projects/', views.projects_template, name='projects'),
     path('concrete_project/<int:project_id>/', views.concrete_project, name='project'),
     path('main/', views.main, name='main'),
+    re_path(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/favicon.ico')),
 ]
