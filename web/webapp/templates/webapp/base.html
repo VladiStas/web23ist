@@ -58,19 +58,22 @@
         >
         
     </div>
-    <div class="navbar-end">
+    <form action="{% url 'search_view' %}" method="GET">
         <div class="navbar-item is-hoverable">
             <div class="field">
                 <div class="control">
                     <input
-                            class="input input-field"
-                            type="search"
-                            placeholder="Поиск"
+                        class="input input-field"
+                        type="search"
+                        name="query"
+                        placeholder="Поиск"
+						id="query"
                     />
                 </div>
             </div>
         </div>
-    </div>
+        <button type="submit" style="display: none;"></button>
+    </form>
         <ul class="navbar-item">
             <!--TODO: JINJA сюда              -->
 			 {% if request.user.is_authenticated %}

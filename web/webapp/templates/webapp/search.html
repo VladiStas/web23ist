@@ -1,12 +1,11 @@
 {% extends 'webapp/base.html' %}
 
-{% endblock %}
-
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
   <!-- Раздел фильтра -->
-<div class="section">
+<div class="section1">
+ {% if show_dropdownStudents %}
     <div class="columns is-centered">
         <div class="column is-4">
             <label for="category">Факультет:</label>
@@ -39,47 +38,207 @@
         </div>
     </div>
     <div class="field has-text-centered">
-        <button class="button enter-button">Применить</button>
+        <button class="button enter-button" onclick="applyFilters()">Применить</button>
     </div>
+	 {% endif %}
+	 {% if show_dropdownProjects %}
+    <div class="columns is-centered">
+        <div class="column is-4">
+            <label for="categoryProjects">Статус:</label>
+            <select id="categoryProjects">
+                <option value="allProjects">Все</option>
+                <option value="categoryProjects1">Ищет команду</option>
+                <option value="categoryProjects2">В процессе</option>
+				<option value="categoryProjects3">В разработке</option>
+				<option value="categoryProjects4">Близок к завершению</option>
+				<option value="categoryProjects5">Прототипировани</option>
+                <option value="categoryProjects6">Завершен</option>
+				<option value="categoryProjects7">Отменён</option>
+            </select>
+        </div>
+        <div class="column is-3">
+            <label for="technologyProjects">Стек технологий:</label>
+            <select id="technologyProjects">
+                <option value="allProjects">Все</option>
+                <option value="techProjects1">c++</option>
+                <option value="techProjects2">python</option>
+                <option value="techProjects3">java script</option>
+                <option value="techProjects4">c#</option>
+            </select>
+        </div>
+    </div>
+    <div class="field has-text-centered">
+        <button class="button enter-button" onclick="applyFiltersProjects()">Применить</button>
+    </div>
+	 {% endif %}
+	<h1>Результаты поиска</h1>
+    <p>Введенный запрос: {{ query }}</p>
 </div>
 
-  </div>
 
-  <!-- Раздел контента -->
+
   <div class="section">
-    <div class="columns is-multiline">
-      {% for project in projects %}
-        <div class="column is-2">
-          <div class="card">
-            <div class="card-image">
-          <figure class="image is-4by3">
-            <img
-              src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg"
-              alt="Placeholder image"
-            />
-          </figure>
+  <div class="columns is-multiline">
+  {% for project in dataAnProjects %}
+    <div class="column is-2">
+    <div class="card">
+      <div class="card-image">
+      <figure class="image is-4by3">
+        <img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
+      </figure>
+      </div>
+      <div class="card-content">
+      <div class="media">
+        <div class="media-left"></div>
+        <div class="media-content">
+        <p class="title is-4">{{ project.project_name }}</p>
         </div>
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left"></div>
-            <div class="media-content">
-              <p class="title is-4">Сайт с котиками</p>
+      </div>
+      <div class="content">
+        {{ project.about_project }}
+      </div>
+      <div class="content">
+        Ключевые слова: {{ project.status }}
+      </div>
+      </div>
+      <footer class="card-footer">
+      <a href="#" class="card-footer-item">Подробнее</a>
+      </footer>
+    </div>
+    </div>
+  {% endfor %}
+  </div>
+</div>
+	
+	
+	
+	<div class="section">
+	  <div class="columns is-multiline">
+		{% for student in dataAnStudents %}
+		  <div class="column is-2">
+			<div class="card">
+			  <div class="card-image">
+				<figure class="image is-4by3">
+				  <img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
+				</figure>
+			  </div>
+			  <div class="card-content">
+				<div class="media">
+				  <div class="media-left"></div>
+				  <div class="media-content">
+					<p class="title is-4">{{ student.id }}</p>  <!-- Замените на соответствующее поле из вашей модели данных -->
+				  </div>
+				</div>
+				<div class="content">
+				  {{ student.course }}
+				</div>
+			  </div>
+			  <footer class="card-footer">
+				<a href="#" class="card-footer-item">Подробнее</a>
+			  </footer>
+			</div>
+		  </div>
+		{% endfor %}
+	  </div>
+	</div>
+	
+	
+	
+	
+	
+	<!-- Раздел контента -->
+  <div class="section">
+  <div class="columns is-multiline">
+    {% for extracurricular in dataAnExtracurricular %}
+      <div class="column is-2">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left"></div>
+              <div class="media-content">
+                <p class="title is-4">{{ extracurricular.course_name }}</p>
+              </div>
+            </div>
+            <div class="content">
+              {{ extracurricular.description }}
+            </div>
+            <div class="content">
+              Ключевые слова: {{ extracurricular.access_code }}
             </div>
           </div>
-
-          <div class="content">
-            Сайт разработанный для котиков Сайт разработанный для котиков
-          </div>
-          <div class="content">
-            Ключевые слова: питон
-          </div>
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Подробнее</a>
+          </footer>
         </div>
-        <footer class="card-footer">
-          <a href="#" class="card-footer-item">Подробнее</a>
-        </footer>
       </div>
-          </div>
-      {% endfor %}
-    </div>
+    {% endfor %}
   </div>
+</div>
+	
+	
+
+<script>
+    function applyFiltersProjects() {
+  var selectedCategoryProjects = document.getElementById('categoryProjects').value;
+  var selectedTechnologyProjects = document.getElementById('technologyProjects').value;
+  var query = document.querySelector('p').innerText.split(":")[1].trim(); // Получаем значение из строки "Введенный запрос: {{ query }}"
+
+  fetch(`/search_view/?selectedCategoryProjects=${selectedCategoryProjects}&selectedTechnologyProjects=${selectedTechnologyProjects}&query=${query}`)
+    .then(response => response.json())
+    .then(data => {
+      var sectionDiv = document.querySelector('.section');
+      sectionDiv.innerHTML = `
+        <div class="columns is-multiline">
+          ${data.dataAnProjects.map(project => 
+            `<div class="column is-2">
+              <div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-left"></div>
+                    <div class="media-content">
+                      <p class="title is-4">${project.project_name}</p>
+                    </div>
+                  </div>
+                  <div class="content">
+                    ${project.about_project}
+                  </div>
+                  <div class="content">
+                    Ключевые слова: ${project.status}
+                  </div>
+                </div>
+                <footer class="card-footer">
+                  <a href="#" class="card-footer-item">Подробнее</a>
+                </footer>
+              </div>
+            </div>`
+          ).join('')}
+        </div>`;
+    });
+}
+		function applyFilters() {
+		  var selectedCategory = document.getElementById('category').value;
+		  var selectedCourse = document.getElementById('course').value;
+		  var selectedTechnology = document.getElementById('technology').value;
+		
+			fetch('/search_view/')
+			.then(response => response.json())
+			.then(data => {
+			  data.forEach(item => {
+				var dataDiv = document.createElement('div');
+				dataDiv.textContent = 'Данные из базы данных: ' + JSON.stringify(item);
+				document.querySelector('.section').appendChild(dataDiv);
+			  });
+			});
+		}
+  </script>
 {% endblock %}

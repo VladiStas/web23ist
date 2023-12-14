@@ -12,4 +12,6 @@ urlpatterns = [
     path('projects/', views.projects_template, name='projects'),
     path('concrete_project/<int:project_id>/', views.concrete_project, name='project'),
     path('main/', views.main, name='main'),
+    path('get_data_from_db/', views.get_data_from_db, name='get_data_from_db'),
+    path('search_view/', views.search_view, name='search_view'),
 ]
