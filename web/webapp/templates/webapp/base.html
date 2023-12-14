@@ -47,7 +47,7 @@
         <!--TODO: JINJA сюда              -->
         <a
                 class="navbar-item has-background has-text-black"
-                href="{% url 'user' %}"
+                href=""
         >Профиль</a
         >
         <!--TODO: JINJA сюда              -->
@@ -74,11 +74,11 @@
         <ul class="navbar-item">
             <!--TODO: JINJA сюда              -->
 			 {% if request.user.is_authenticated %}
-            <li class="profile-href has-text-black " href="ссылка-на-профиль">{{user.username}}</li>
+            <li class="profile-href has-text-black">{{user.username}}</li>
         </div>
         <div class="navbar-item ">
             <!--TODO: JINJA сюда              -->
-            <a href="ссылка-на-профиль">
+            <a href="">
                 <img class="is-rounded" src="https://img.icons8.com/?size=80&id=sTe2gqf95B1e&format=png"
                      alt="Фото пользователя">
             </a>

@@ -1,46 +1,48 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
-
+<form method="post">
+    {% csrf_token %}
     <div class="columns py-6 px-6">
         <img src="https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png" alt="Фото пользователя" class="column is-one-quarter" />
       
         <div class="column">
-            <h5 class="title is-2">Иванов Иван Иванович</h5>
+            <h5 class="title is-2">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h5>
             <div class="columns">
                 <div class="column">
-                    <div class="py-2">Почта:</div>
+                    <div class="py-2">Почта: </div>
                     <div class="py-2">Телефон:</div>
                 </div>
                 <div class="column">
-                    <div class="py-2">ivanov@gmail.com</div>
-                    <div class="py-2">+7 123 456 78 90</div>
+                    <div class="py-2">{{user.email}}</div>
+                    <div class="py-2">{{user.phone_number}}</div>
                 </div>
                 <div class="column">
                     <div class="py-2">Место учёбы:</div>
                     <div class="py-2">Год поступления:</div>
-                    <div class="py-2">Факультет:</div>
+                    <div class="py-2">Телеграм:</div>
                     <div class="py-2">Курс:</div>
                     <div class="py-2">Группа:</div>
                 </div>
                 <div class="column">
                     <div class="py-2">ВолгГТУ</div>
                     <div class="py-2">2020</div>
-                    <div class="py-2">ФАиГР</div>
+                    <div class="py-2">{{user.telegram_nick}}</div>
                     <div class="py-2">4</div>
                     <div class="py-2">ИСТ-1-20</div>
                 </div>
             </div>
         </div>
-
+        {% if user.id == current_user_id %}
         <div class="column is-one-quarter">
             <a href="{% url 'settings' %}" class="card-footer-item">Настроить профиль</a>
         </div>
+        {% endif %}
     </div>
 
     <div class="columns py-4 px-4">
         <div class="column">
-            <div class="text">О себе: люблю сухой корм с курицей</div>
+            <div class="text">{{user.about_me}}</div>
         </div>
     </div>
 
@@ -229,6 +231,7 @@
             </ol>
         </div>
     </div>
+</form>
 {% endblock %}
 <style>
     body {

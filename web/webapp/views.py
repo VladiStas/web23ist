@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseNotFound
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView, LogoutView
@@ -11,7 +11,7 @@ from .forms import UserLoginForm
 class UserLoginView(SuccessMessageMixin, LoginView):
     form_class = UserLoginForm
     template_name = 'webapp/login.html'
-    next_page = 'projects'
+    next_page = 'main'
     success_message = 'Добро пожаловать на сайт!'
 
     def get_context_data(self, **kwargs):
@@ -20,11 +20,11 @@ class UserLoginView(SuccessMessageMixin, LoginView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('projects')
+        return reverse_lazy('main')
 
 
 class UserLogoutView(LogoutView):
-    next_page = 'projects'
+    next_page = 'main'
 
 
 # TODO Поменять верхний класс на нижний в релизе
@@ -74,8 +74,14 @@ def main(request):
     return render(request, 'webapp/main.html', {'title': 'Главная'})
 
 
-def user(request):
-    return render(request, 'webapp/user.html', {'title': 'Мой профиль'})
+@login_required()
+def user(request, user_id):
+        user_my = UserData.objects.get(pk=user_id)
+        #user_data = user_my.user_data
+        return render(request, 'webapp/user.html', {'user': user_my,
+                                                    'title': 'Мой профиль',
+                                                    # 'user_data': user_data,
+                                                    'current_user_id': request.user.id})
 
 
 def profile_user_settings(request):
@@ -94,9 +100,6 @@ def concrete_project(request, project_id):
     return HttpResponse(f"{project_id}")
     #return render(request, 'webapp/projects.html', {'data': data, 'title': 'Страница проекта'})
 
-#
-# @login_required()
-# def profile_user(request, id):
-#     users = user.objects.get(id=id)
-#     return render(request, f'webapp/profile_user/{id}.html', {"users": users})
-#     # return redirect(reverse('webapp/profile_user/{id}.html', f'webapp/profile_user/{id}.html', {"users":users}))
+
+def pageNotFound(request, exception):
+    return HttpResponseNotFound("Страница не найдена :/")
