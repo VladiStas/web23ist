@@ -52,7 +52,6 @@ class CompetenceSkillTree(models.Model):
 
 
 class UserData(models.Model):
-
     class Meta:
         db_table = "user"
         verbose_name = "Данные о пользователе"
@@ -70,7 +69,7 @@ class UserData(models.Model):
     telegram_nick = models.CharField(max_length=128)
     hide_contacts = models.BooleanField()
 
-    # user = models.OneToOneField(CompetenceSkillTree, related_name='skill_tree', on_delete=models.CASCADE)
+    # user = models.OneToOneField(User, related_name='user_data', on_delete=models.CASCADE)
 
 
 class CompetenceExtracurricularCourses(models.Model):

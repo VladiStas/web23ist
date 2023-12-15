@@ -4,33 +4,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse, reverse_lazy
-from .models import User, Project,Students,CompetenceExtracurricularCourses
+from .models import *
 from .forms import UserLoginForm
+import requests
 
 
-class UserLoginView(SuccessMessageMixin, LoginView):
-    form_class = UserLoginForm
-    template_name = 'webapp/login.html'
-    next_page = 'main'
-    success_message = 'Добро пожаловать на сайт!'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Авторизация на сайте'
-        return context
-
-    def get_success_url(self):
-        return reverse_lazy('main')
-
-
-class UserLogoutView(LogoutView):
-    next_page = 'main'
-
-
-# TODO Поменять верхний класс на нижний в релизе
 # class UserLoginView(SuccessMessageMixin, LoginView):
 #     form_class = UserLoginForm
 #     template_name = 'webapp/login.html'
+#     next_page = 'main'
 #     success_message = 'Добро пожаловать на сайт!'
 #
 #     def get_context_data(self, **kwargs):
@@ -38,36 +20,55 @@ class UserLogoutView(LogoutView):
 #         context['title'] = 'Авторизация на сайте'
 #         return context
 #
-#     def form_valid(self, form):
-#         print("Login successful!")  # Добавьте эту строку
-#         response = super().form_valid(form)
-#         # Подготовка данных для POST-запроса
-#         payload = {
-#             'username': form.cleaned_data['username'],  # Обратите внимание на использование cleaned_data
-#             'password': form.cleaned_data['password'],
-#             # Другие данные, если необходимо
-#         }
-#
-#         # Ваш запрос. Предполагается, что ваш сервер ожидает POST-запрос.
-#         response1 = requests.post('http://localhost:5228/api/Auth/auth', json=payload)
-#
-#         if response1.status_code == 200:
-#             # Если успешно, например, можете сохранить токен в сессии или куках
-#             # и затем перенаправить пользователя
-#             print(response1.json())
-#             return response
-#         else:
-#             # Если запрос неудачен, вы можете обработать ошибку или принять другие меры
-#             print('Authentication failed')
-#             return response
-#
-#     def form_invalid(self, form):
-#         print("Login failed!")  # Добавьте эту строку
-#         return super().form_invalid(form)
-#
 #     def get_success_url(self):
-#         # После успешной авторизации, перенаправляем пользователя на вкладку проектов
-#         return reverse_lazy('user')
+#         return reverse_lazy('main')
+
+
+class UserLogoutView(LogoutView):
+    next_page = 'main'
+
+
+# TODO Поменять верхний класс на нижний в релизе
+class UserLoginView(SuccessMessageMixin, LoginView):
+    form_class = UserLoginForm
+    template_name = 'webapp/login.html'
+    success_message = 'Добро пожаловать на сайт!'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Авторизация на сайте'
+        return context
+
+    def form_valid(self, form):
+        print("Login successful!")  # Добавьте эту строку
+        response = super().form_valid(form)
+        # Подготовка данных для POST-запроса
+        payload = {
+            'username': form.cleaned_data['username'],  # Обратите внимание на использование cleaned_data
+            'password': form.cleaned_data['password'],
+            # Другие данные, если необходимо
+        }
+
+        # Ваш запрос. Предполагается, что ваш сервер ожидает POST-запрос.
+        response1 = requests.post('http://localhost:5228/api/Auth/auth', json=payload)
+
+        if response1.status_code == 200:
+            # Если успешно, например, можете сохранить токен в сессии или куках
+            # и затем перенаправить пользователя
+            print(response1.json())
+            return response
+        else:
+            # Если запрос неудачен, вы можете обработать ошибку или принять другие меры
+            print('Authentication failed')
+            return response
+
+    def form_invalid(self, form):
+        print("Login failed!")  # Добавьте эту строку
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        # После успешной авторизации, перенаправляем пользователя на вкладку проектов
+        return reverse_lazy('main')
 
 
 def main(request):
@@ -76,11 +77,11 @@ def main(request):
 
 @login_required()
 def user(request, user_id):
-        user_my = UserData.objects.get(pk=user_id)
-        #user_data = user_my.user_data
+        user_my = User.objects.get(pk=user_id)
+        user_data = UserData.objects.get(pk=user_id)
         return render(request, 'webapp/user.html', {'user': user_my,
                                                     'title': 'Мой профиль',
-                                                    # 'user_data': user_data,
+                                                    'user_data': user_data,
                                                     'current_user_id': request.user.id})
 
 
@@ -100,9 +101,9 @@ def projects_template(request):
 
 @login_required()
 def concrete_project(request, project_id):
-    data = Project.objects.all()
-    return HttpResponse(f"{project_id}")
-    #return render(request, 'webapp/projects.html', {'data': data, 'title': 'Страница проекта'})
+    data = Project.objects.get(pk=project_id)
+    #return HttpResponse(f"{project_id}")
+    return render(request, 'webapp/concrete-project.html', {'data': data, 'title': 'Страница проекта'})
 
 
 def pageNotFound(request, exception):

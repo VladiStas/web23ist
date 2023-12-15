@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'appdb',
         'USER': 'pguser',
         'PASSWORD': 'pgpassword',
-        'HOST': '192.168.0.111',
+        'HOST': '192.168.68.154',
         'PORT': 5432,
     }
 }
