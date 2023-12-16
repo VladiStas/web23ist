@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webapp',
 ]
+
+AUTH_USER_MODEL = 'webapp.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,7 +81,7 @@ DATABASES = {
         'NAME': 'appdb',
         'USER': 'pguser',
         'PASSWORD': 'pgpassword',
-        'HOST': '192.168.68.154',
+        'HOST': '26.105.126.238',
         'PORT': 5432,
     }
 }

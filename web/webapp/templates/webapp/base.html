@@ -70,7 +70,7 @@
         <ul class="navbar-item">
             <!--TODO: JINJA сюда              -->
 			 {% if request.user.is_authenticated %}
-            <li class="profile-href has-text-black"><a href="{% url 'user' request.user.id %}">{{request.user.username}}</a></li>
+            <li class="profile-href has-text-black"><a href="{% url 'user' request.user.id %}">{{request.user.login}}</a></li>
         </div>
         <div class="navbar-item ">
             <!--TODO: JINJA сюда              -->

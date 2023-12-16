@@ -1,21 +1,53 @@
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import UserManager, PermissionsMixin
 from django.db import models
 from django.urls import reverse
 
 
-class User(models.Model):
+class CustomUserManager(BaseUserManager):
+    def _create_user(self, email, password, **extra_fields):
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_user(self, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('hide_contacts', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('hide_contacts', False)
+        return self._create_user(email, password, **extra_fields)
+
+
+class User(AbstractBaseUser):
 
     class Meta:
         managed = False
-        db_table = "auth_user"
+        db_table = "user"
         verbose_name = "Пользователи"
 
-    id = models.IntegerField(primary_key=True)
-    first_name = models.CharField(max_length=128)
-    last_name = models.CharField(max_length=128)
-    email = models.CharField(max_length=128)
+    last_login = models.DateTimeField()
+    login = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length=50)
+    firstname = models.CharField(max_length=50)
+    lastname = models.CharField(max_length=50)
+    email = models.CharField(max_length=50)
+    hide_contacts = models.BooleanField()
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'login'
+    REQUIRED_FIELDS = []
 
     def get_url(self):
         return reverse('user', kwargs={'user_id': self.pk})
+
+    def __str__(self):
+        return self.email
+
 
 class Project(models.Model):
 
@@ -93,6 +125,7 @@ class CompetenceExtracurricularCourses(models.Model):
                 'access_code': course2.certificate_number
             })
         return data
+
 
 class Students(models.Model):
     class Meta:

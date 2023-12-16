@@ -7,6 +7,7 @@ from django.urls import reverse, reverse_lazy
 from .models import *
 from .forms import UserLoginForm
 import requests
+import json
 
 
 # class UserLoginView(SuccessMessageMixin, LoginView):
@@ -39,35 +40,36 @@ class UserLoginView(SuccessMessageMixin, LoginView):
         context['title'] = 'Авторизация на сайте'
         return context
 
+    def post(self, request, *args, **kwargs):
+        # Получение данных из POST-запроса до валидации формы
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username)
+        return super().post(request, *args, **kwargs)
+
     def form_valid(self, form):
-        print("Login successful!")  # Добавьте эту строку
+        print("Login successful!")
         response = super().form_valid(form)
-        # Подготовка данных для POST-запроса
         payload = {
             'username': form.cleaned_data['username'],  # Обратите внимание на использование cleaned_data
             'password': form.cleaned_data['password'],
-            # Другие данные, если необходимо
         }
-
-        # Ваш запрос. Предполагается, что ваш сервер ожидает POST-запрос.
-        response1 = requests.post('http://localhost:5228/api/Auth/auth', json=payload)
-
+        payload_json = json.dumps(payload)
+        print(payload_json)
+        response1 = requests.post('http://localhost:5228/api/Auth/auth', json=payload_json)
+        print(response1.status_code)
         if response1.status_code == 200:
-            # Если успешно, например, можете сохранить токен в сессии или куках
-            # и затем перенаправить пользователя
             print(response1.json())
             return response
         else:
-            # Если запрос неудачен, вы можете обработать ошибку или принять другие меры
             print('Authentication failed')
             return response
 
     def form_invalid(self, form):
-        print("Login failed!")  # Добавьте эту строку
+        print("Login failed!")
         return super().form_invalid(form)
 
     def get_success_url(self):
-        # После успешной авторизации, перенаправляем пользователя на вкладку проектов
         return reverse_lazy('main')
 
 
@@ -78,10 +80,8 @@ def main(request):
 @login_required()
 def user(request, user_id):
         user_my = User.objects.get(pk=user_id)
-        user_data = UserData.objects.get(pk=user_id)
         return render(request, 'webapp/user.html', {'user': user_my,
                                                     'title': 'Мой профиль',
-                                                    'user_data': user_data,
                                                     'current_user_id': request.user.id})
 
 
