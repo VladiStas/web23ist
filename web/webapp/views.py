@@ -1,9 +1,11 @@
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth.hashers import make_password
 from .models import *
 from .forms import UserLoginForm
 import requests
@@ -44,26 +46,39 @@ class UserLoginView(SuccessMessageMixin, LoginView):
         # Получение данных из POST-запроса до валидации формы
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print(username)
+
+        payload = {
+            'username': username,
+            'password': password,
+        }
+
+        response1 = requests.post('http://localhost:7000/api/Auth/auth', json=payload)
+        print(response1.status_code)
+
+        if response1.status_code == 200:
+            new_user = User.objects.get(login=username)
+            new_user.password = make_password(password) #password
+            new_user.save()
+
+
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        print("Login successful!")
+        print("Login successful!")  # Добавьте эту строку
         response = super().form_valid(form)
-        payload = {
-            'username': form.cleaned_data['username'],  # Обратите внимание на использование cleaned_data
-            'password': form.cleaned_data['password'],
-        }
-        payload_json = json.dumps(payload)
-        print(payload_json)
-        response1 = requests.post('http://localhost:5228/api/Auth/auth', json=payload_json)
-        print(response1.status_code)
-        if response1.status_code == 200:
-            print(response1.json())
-            return response
-        else:
-            print('Authentication failed')
-            return response
+        # # Подготовка данных для POST-запроса
+        # payload = {
+        #     'username': form.cleaned_data['username'],  # Обратите внимание на использование cleaned_data
+        #     'password': form.cleaned_data['password'],
+        # }
+        # response1 = requests.post('http://localhost:7000/api/Auth/auth', json=payload)
+        # print(response1.status_code)
+        # if response1.status_code == 200:
+        #     print(response1.json())
+        #     return response
+        # else:
+        #     print('Authentication failed')
+        return response
 
     def form_invalid(self, form):
         print("Login failed!")
