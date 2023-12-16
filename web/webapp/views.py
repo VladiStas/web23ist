@@ -9,22 +9,6 @@ from django.contrib.auth.hashers import make_password
 from .models import *
 from .forms import UserLoginForm
 import requests
-import json
-
-
-# class UserLoginView(SuccessMessageMixin, LoginView):
-#     form_class = UserLoginForm
-#     template_name = 'webapp/login.html'
-#     next_page = 'main'
-#     success_message = 'Добро пожаловать на сайт!'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'Авторизация на сайте'
-#         return context
-#
-#     def get_success_url(self):
-#         return reverse_lazy('main')
 
 
 class UserLogoutView(LogoutView):
@@ -53,31 +37,17 @@ class UserLoginView(SuccessMessageMixin, LoginView):
         }
 
         response1 = requests.post('http://localhost:7000/api/Auth/auth', json=payload)
-        print(response1.status_code)
 
         if response1.status_code == 200:
             new_user = User.objects.get(login=username)
-            new_user.password = make_password(password) #password
+            new_user.password = make_password(password)
             new_user.save()
-
 
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        print("Login successful!")  # Добавьте эту строку
+        print("Login successful!")
         response = super().form_valid(form)
-        # # Подготовка данных для POST-запроса
-        # payload = {
-        #     'username': form.cleaned_data['username'],  # Обратите внимание на использование cleaned_data
-        #     'password': form.cleaned_data['password'],
-        # }
-        # response1 = requests.post('http://localhost:7000/api/Auth/auth', json=payload)
-        # print(response1.status_code)
-        # if response1.status_code == 200:
-        #     print(response1.json())
-        #     return response
-        # else:
-        #     print('Authentication failed')
         return response
 
     def form_invalid(self, form):
