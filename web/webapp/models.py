@@ -102,6 +102,24 @@ class UserData(models.Model):
     telegram_nick = models.CharField(max_length=128)
     hide_contacts = models.BooleanField()
 
+    @staticmethod
+    def get_data_from_db():
+        courses2 = UserData.objects.all()
+        data = []
+        for course2 in courses2:
+            data.append({
+                'login': course2.login,
+                'firstname': course2.firstname,
+                'middlename': course2.middlename,
+                'lastname': course2.lastname,
+                'photo': course2.photo,
+                'about_me': course2.about_me,
+                'phone_number': course2.phone_number,
+                'email': course2.email,
+                'telegram_nick': course2.telegram_nick,
+                'hide_contacts': course2.hide_contacts,
+            })
+        return data
     # user = models.OneToOneField(User, related_name='user_data', on_delete=models.CASCADE)
 
 
@@ -146,5 +164,30 @@ class Students(models.Model):
                 'course': courseses.course,
                 'admission_year': courseses.admission_year,
                 'user_id': courseses.user_id
+            })
+        return data
+
+class CompetenceScientificPublications(models.Model):
+    class Meta:
+        db_table = "competence_scientific_publications"
+        verbose_name = "Компетентность научные публикации"
+
+    name = models.CharField(max_length=150)
+    year_of_issue = models.IntegerField()
+    publication_level = models.CharField(max_length=50)
+    journal = models.CharField(max_length=150)
+    authors = models.CharField(max_length=150)
+
+    @staticmethod
+    def get_data_from_db():
+        courses3 = CompetenceScientificPublications.objects.all()
+        data = []
+        for courseses3 in courses3:
+            data.append({
+                'name': courseses3.name,
+                'year_of_issue': courseses3.year_of_issue,
+                'publication_level': courseses3.publication_level,
+                'journal': courseses3.journal,
+                'authors': courseses3.authors
             })
         return data

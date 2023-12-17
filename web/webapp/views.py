@@ -10,7 +10,6 @@ from .models import *
 from .forms import UserLoginForm
 import requests
 
-
 class UserLogoutView(LogoutView):
     next_page = 'main'
 
@@ -94,162 +93,117 @@ def concrete_project(request, project_id):
 def pageNotFound(request, exception):
     return HttpResponseNotFound("Страница не найдена :/")
 
-def get_data_from_db(request):
-
-
-    selectedCategoryProjects = request.GET.get('selectedCategoryProjects')
-    selectedTechnologyProjects = request.GET.get('selectedTechnologyProjects')
-    selectedCategory = request.GET.get('selectedCategory')
-    selectedCourse = request.GET.get('selectedCourse')
-    selectedTechnology = request.GET.get('selectedTechnology')
-
-    dataProject = Project.get_data_from_db()
-    dataStudents  = Students.get_data_from_db()
-    dataExtracurricular = CompetenceExtracurricularCourses.get_data_from_db()
-
-    dataAnProjects = []
-    if selectedCategoryProjects:
-
-        print(selectedCategoryProjects)
-        print(selectedTechnologyProjects)
-        print(selectedCategory)
-        print(selectedCourse)
-        print(selectedTechnology)
-        for item in dataProject:
-            if item['category'] == selectedCategoryProjects and item['technology'] == selectedTechnologyProjects:
-                dataAnProjects.append(item)
-    elif selectedCategory:
-
-        print(selectedCategory)
-        print(selectedCourse)
-        print(selectedTechnology)
-
-    return JsonResponse(dataAnProjects, safe=False)
-    #return JsonResponse(dataExtracurricular, safe=False)
-
 def search_view(request):
-    dataProject = Project.get_data_from_db()
-    dataStudents  = Students.get_data_from_db()
-    dataExtracurricular = CompetenceExtracurricularCourses.get_data_from_db()
     query = request.GET.get('query')
-    show_dropdownStudents = False  # по умолчанию показываем выпадающий список
+    query=query[1:-1]
+    DBName = request.GET.get('DBName')
     show_dropdownProjects = False
-    dataAnProjects = []  # создаем пустой список для хранения данных
-    dataAnStudents = []  # создаем пустой список для хранения данных
-    dataAnExtracurricular = []  # создаем пустой список для хранения данных
+    show_dropdownStudents = False
+    llo=[]
+
     selectedCategoryProjects = request.GET.get('selectedCategoryProjects')
     selectedTechnologyProjects = request.GET.get('selectedTechnologyProjects')
+
     selectedCategory = request.GET.get('selectedCategory')
     selectedCourse = request.GET.get('selectedCourse')
     selectedTechnology = request.GET.get('selectedTechnology')
-    selectedCategoryProjects2=""
-    selectedTechnologyProjects2=""
-    if selectedCategoryProjects:
-        if(selectedCategoryProjects == "categoryProjects1"):
-            selectedCategoryProjects="ищет команд"
-        elif(selectedCategoryProjects == "categoryProjects2"):
-            selectedCategoryProjects="в процесс"
-        elif(selectedCategoryProjects == "categoryProjects3"):
-            selectedCategoryProjects="В разработ"
-        elif(selectedCategoryProjects == "categoryProjects4"):
-            selectedCategoryProjects="близок к заверш"
-        elif(selectedCategoryProjects == "categoryProjects5"):
-            selectedCategoryProjects="прототипировани"
-        elif(selectedCategoryProjects == "categoryProjects6"):
-            selectedCategoryProjects="завершён"
-        elif(selectedCategoryProjects == "categoryProjects7"):
-            selectedCategoryProjects="Отменё"
-        elif(selectedCategoryProjects == "allProjects"):
-            selectedCategoryProjects=""
-            selectedCategoryProjects2="allProjects"
 
-        if(selectedTechnologyProjects == "techProjects1"):
-            selectedTechnologyProjects="c++"
-        elif(selectedTechnologyProjects == "techProjects2"):
-            selectedTechnologyProjects="python"
-        elif(selectedTechnologyProjects == "techProjects3"):
-            selectedTechnologyProjects="java script"
-        elif(selectedTechnologyProjects == "techProjects4"):
-            selectedTechnologyProjects="c#"
-        elif(selectedTechnologyProjects == "allProjects"):
-            selectedTechnologyProjects=""
-            selectedTechnologyProjects2= "allProjects"
-        print(selectedCategoryProjects)
-        print(selectedTechnologyProjects)
+    if(DBName=="projects"):
+        dataProject = Project.get_data_from_db() # хранилище данных из БД
+        dataAnProjects = []  # создаем пустой список для хранения данных projects
+        show_dropdownProjects=True # включаем сортировку для данных
 
-    elif selectedCategory:
-
-        print(selectedCategory)
-        print(selectedCourse)
-        print(selectedTechnology)
-
-    if query:
-        for project in dataProject:
-            plum=0
-            for value in project.values():
-                if query.lower() in str(value).lower() and plum==0:
-                    show_dropdownProjects = True    # скрываем выпадающий список
-                    dataAnProjects.append(project)  # добавляем данные в dataAnProjects
-                    plum=1
-        for students in dataStudents:
-            plum=0
-            for value in students.values():
-                if query.lower() in str(value).lower() and plum==0:
-                    show_dropdownStudents = True
-                    dataAnStudents.append(students)
-                    plum=1
-        for extracurricular in dataExtracurricular:
-            plum=0
-            for value in extracurricular.values():
-                if query.lower() in str(value).lower() and plum==0:
-                    dataAnExtracurricular.append(extracurricular)
-                    plum=1
-    '''elif query and query == "Stud":
-        show_dropdownProjects = False
-        show_dropdownStudents = True'''
-    if query and query == "":
-        show_dropdownStudents = False
-        show_dropdownProjects = False
-    dataAnProjects2=[]
-    for value in dataAnProjects:
-        #print(value)
-        if selectedCategoryProjects:
-            if selectedCategoryProjects.lower() in str(value).lower() and selectedTechnologyProjects.lower() in str(value).lower():
-                show_dropdownProjects = True    # скрываем выпадающий список
-                dataAnProjects2.append(value)  # добавляем данные в dataAnProjects2
-    for value in dataAnProjects:
-        #print(value)
-        if selectedTechnologyProjects:
-            if selectedTechnologyProjects.lower() in str(value).lower() and selectedTechnologyProjects!="":
-                show_dropdownProjects = True    # скрываем выпадающий список
-                dataAnProjects2.append(value)  # добавляем данные в dataAnProjects2
-    if selectedCategoryProjects!=None:
-        print("-----------------------------------------")
-        print(dataAnProjects2)
-        print(dataAnProjects)
-        print("_________________________________________________________________________")
-        if selectedCategoryProjects2=="allProjects" and selectedTechnologyProjects2=="allProjects":
-            data = {
-            'query': query,
-            'show_dropdownProjects': show_dropdownProjects,
-            'show_dropdownStudents': show_dropdownStudents,
-            'dataAnProjects': dataAnProjects,
-            'dataAnStudents': dataAnStudents,
-            'dataAnExtracurricular': dataAnExtracurricular
-            }
-
+        if query:
+            for project in dataProject:
+                plum=0
+                for value in project.values():
+                    if query.lower() in str(value).lower() and plum==0:
+                        dataAnProjects.append(project)  # добавляем данные в dataAnProjects
+                        plum=1
         else:
-            data = {
-            'query': query,
-            'show_dropdownProjects': show_dropdownProjects,
-            'show_dropdownStudents': show_dropdownStudents,
-            'dataAnProjects': dataAnProjects2,
-            'dataAnStudents': dataAnStudents,
-            'dataAnExtracurricular': dataAnExtracurricular
-            }
+            print(DBName)
+            dataAnProjects = dataProject
+        if(selectedTechnologyProjects!=None):
+            dataAnProjectsSort=[]
+            if selectedCategoryProjects != "allProjects":
+                for value in dataAnProjects:
+                    if selectedCategoryProjects.lower() in str(value).lower() and (selectedTechnologyProjects.lower() in str(value).lower() or selectedTechnologyProjects=="allProjects"):
+                        dataAnProjectsSort.append(value)
+            if selectedTechnologyProjects!= "allProjects":
+                for value in dataAnProjects:
+                    if selectedTechnologyProjects.lower() in str(value).lower() and selectedTechnologyProjects!="":
+                        dataAnProjectsSort.append(value)
+            if selectedCategoryProjects=="allProjects" and selectedTechnologyProjects=="allProjects":
+                data = {
+                'query': query,
+                'DBName': DBName,
+                'show_dropdownProjects': show_dropdownProjects,
+                'show_dropdownStudents': show_dropdownStudents,
+                'dataAnProjects': dataAnProjects,
+                'dataAnStudents': llo,
+                'dataAnExtracurricular': llo,
+                'dataAnPublications': llo
+                }
+            else:
+                data = {
+                'query': query,
+                'DBName': DBName,
+                'show_dropdownProjects': show_dropdownProjects,
+                'show_dropdownStudents': show_dropdownStudents,
+                'dataAnProjects': dataAnProjectsSort,
+                'dataAnStudents': llo,
+                'dataAnExtracurricular': llo,
+                'dataAnPublications': llo
+                }
+            return JsonResponse(data)
+        else:
+            print("_______________________________________")
+            print(dataAnProjects)
+            print("---------------------------------")
+            print("---+---+---+---+---+---+---")
+            return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': dataAnProjects, 'dataAnStudents': llo, 'dataAnExtracurricular': llo, 'dataAnPublications': llo})
+    elif(DBName=="competence_extracurricular_courses"):
+        dataExtracurricular = CompetenceExtracurricularCourses.get_data_from_db()
+        dataAnExtracurricular = []
+        if query:
+            for extracurricular in dataExtracurricular:
+                plum=0
+                for value in extracurricular.values():
+                    if query.lower() in str(value).lower() and plum==0:
+                        dataAnExtracurricular.append(extracurricular)
+                        plum=1
+        else:
+            dataAnExtracurricular=dataExtracurricular
+        return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': llo, 'dataAnExtracurricular': dataAnExtracurricular, 'dataAnPublications': llo})
+    elif(DBName=="students"):
+        dataStudents  = UserData.get_data_from_db()
+        dataAnStudents = []
+        show_dropdownStudents=True
+        if query:
+            for students in dataStudents:
+                plum=0
+                for value in students.values():
+                    if query.lower() in str(value).lower() and plum==0:
+                        show_dropdownStudents = True
+                        dataAnStudents.append(students)
+                        plum=1
+        else:
+            dataAnStudents=dataStudents
+        return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': dataAnStudents, 'dataAnExtracurricular': llo, 'dataAnPublications': llo})
+    elif(DBName=="competence_scientific_publications"):
+        dataPublications = CompetenceScientificPublications.get_data_from_db()
+        dataAnPublications = []
+        if query:
+            for publications in dataPublications:
+                plum=0
+                for value in publications.values():
+                    if query.lower() in str(value).lower() and plum==0:
+                        dataAnPublications.append(publications)
+                        plum=1
+        else:
+            dataAnPublications=dataPublications
+        return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': llo, 'dataAnExtracurricular': llo, 'dataAnPublications': dataAnPublications})
 
 
-        return JsonResponse(data)
-    else:
-        return render(request, 'webapp/search.html', {'query': query, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': dataAnProjects, 'dataAnStudents': dataAnStudents, 'dataAnExtracurricular': dataAnExtracurricular})
+    return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': llo, 'dataAnExtracurricular': llo, 'dataAnPublications': llo})
 

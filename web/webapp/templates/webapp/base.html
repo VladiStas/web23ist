@@ -32,10 +32,9 @@
 <body>
 <nav class="navbar">
     <div class="navbar-brand">
-
         <a class="navbar-item ">
             <img src="http://istvstu.ru/img/svg/logo-header.svg" class="nav__logo-image" width="65" height="74"
-                 alt="Logo">
+                alt="Logo">
             <div class="tekst_sverhu_kartinki">Кафедра ЦТУАС</div>
         </a>
         <!--TODO: JINJA сюда              -->
@@ -51,22 +50,32 @@
         >
         
     </div>
-    <form action="{% url 'search_view' %}" method="GET">
-        <div class="navbar-item is-hoverable">
-            <div class="field">
-                <div class="control">
-                    <input
-                        class="input input-field"
-                        type="search"
-                        name="query"
-                        placeholder="Поиск"
-						id="query"
-                    />
-                </div>
-            </div>
-        </div>
-        <button type="submit" style="display: none;"></button>
-    </form>
+    <div class="navbar-end">
+		<div class="navbar-item">
+			 <div class="field">
+				<div class="control">
+					<div class="dropdown">
+						<input
+								class="input input-field"
+								type="search"
+								name="query"
+								placeholder="Поиск"
+								id="query"
+								onkeypress="searchProjects(event)"
+						/>
+						<div class="dropdown-content">
+							<h1>Выберите нужный фильтр по желанию</h1>
+								<div> 
+									<div><label class="checkbox"><input type="radio" name="status" value="students"> Студент</label></div>
+									<div><label class="checkbox"><input type="radio" name="status" value="projects"> Проект</label></div>
+									<div><label class="checkbox"><input type="radio" name="status" value="competence_extracurricular_courses"> Дополнительные курсы</label></div>
+									<div><label class="checkbox"><input type="radio" name="status" value="competence_scientific_publications"> Научные публикации</label></div>
+							  </div>
+						</div>
+					</div>
+				</div>
+			 </div>
+		</div>
         <ul class="navbar-item">
             <!--TODO: JINJA сюда              -->
 			 {% if request.user.is_authenticated %}
@@ -89,4 +98,82 @@
     {% block content %}{% endblock %}
 </div>
 </body>
+<script>
+ function searchProjects(event) {
+	if (event.key === 'Enter') {
+		var query = document.getElementById('query').value;
+		var DBName = document.querySelector('input[name="status"]:checked').value;
+		//var DBName = "projects";
+		//var DBName = "competence_extracurricular_courses";
+		//var DBName = "students";
+		//var DBName = "competence_scientific_publications";
+		
+		var url = `/search_view/?query=${query}&DBName=${DBName}`;
+		window.location.href = url; // Переход на страницу поиска с учетом введенного запроса
+	}
+  }
+ </script>
 </html>
+<style>
+ body {
+
+    background: linear-gradient(#FFFFFF, #195ae02b); /* Замените #FFA500 на цвет, который вы хотите использовать */
+    margin: 0; /* Убираем отступы по умолчанию */
+    padding: 0; /* Убираем внутренние отступы по умолчанию */
+    width: 100%; /* Растягиваем по ширине на 100% экрана */
+    min-height: 100vh; /* Растягиваем по высоте на 100% высоты экрана */
+	}
+  .input-field {
+    width: 500px;
+  }
+  .profile-href {
+    color: white;
+  }
+  .profile-href:hover {
+    color: #faab36;
+  }
+  .project-box {
+    min-height: 300px;
+  }
+      .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+/* список */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      width: 500px; /* Ширина выпадающего списка */
+      max-height: 400px; /* Максимальная высота списка, которая будет отображаться без прокрутки */
+      overflow-y: auto; /* Добавление вертикальной прокрутки при необходимости */
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      padding: 8px; /* Добавляем отступы для элементов списка */
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content div,
+    .dropdown-content a {
+      display: block;
+      
+    }
+	    /* Уровень 1 элементы */
+    .dropdown-content > div {
+      padding: 4px 0;
+    }
+
+    /* Уровень 2 элементы */
+    .dropdown-content > div > div {
+      padding-left: 20px; /* Отступ слева для вложенных элементов */
+    }
+	
+	.enter-button{
+        background-color: #427cf329;
+        width: 150px;
+    }
+
+</style>
