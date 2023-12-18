@@ -155,11 +155,11 @@
 								</div>
 							</div>
 							<div class="content">
-								{{ student.email }}
+								Почта: {{ student.email }}
 							</div>
 						</div>
 						<footer class="card-footer">
-							<a href="#" class="card-footer-item">Подробнее</a>
+							<a href="{% url 'user' student.id %}" class="card-footer-item">Подробнее</a>
 						</footer>
 					</div>
 				</div>

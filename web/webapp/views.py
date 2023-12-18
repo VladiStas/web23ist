@@ -208,7 +208,7 @@ def search_view(request):
             dataAnExtracurricular=dataExtracurricular
         return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': llo, 'dataAnExtracurricular': dataAnExtracurricular, 'dataAnPublications': llo})
     elif(DBName=="students"):
-        dataStudents  = UserData.get_data_from_db()
+        dataStudents  = UserData.objects.all()
         dataAnStudents = []
         show_dropdownStudents=True
         if query:
