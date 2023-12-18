@@ -6,6 +6,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.hashers import make_password
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import *
 from .forms import UserLoginForm
 import requests
@@ -93,12 +95,29 @@ def projects_template(request):
 @login_required()
 def concrete_project(request, project_id):
     data = Project.objects.get(pk=project_id)
-    user_my = User.objects.all()
     keywords = data.keywords.split(',')
     return render(request, 'webapp/concrete-project.html', {'data': data,
                                                             'keyword': keywords,
-                                                            'user': user_my,
                                                             'title': 'Страница проекта'})
+@login_required()
+@csrf_exempt
+def project_settings(request, project_id_settings):
+    data = Project.objects.get(pk=project_id_settings)
+    if request.method == 'POST':
+        project_name = request.POST.get('project_name_field')
+        keywords = request.POST.get('keywords_field')
+        status = request.POST.get('status_field')
+        about_project = request.POST.get('about_field')
+        data.project_name = project_name
+        data.keywords = keywords
+        data.status = status
+        data.about_project = about_project
+        data.save()
+
+        return redirect('project', project_id=project_id_settings)
+
+    return render(request, 'webapp/project-settings.html', {'data': data,
+                                                            'title': 'Настройки проекта'})
 
 
 # Влад
