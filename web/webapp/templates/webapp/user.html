@@ -20,16 +20,20 @@
                 <div class="column">
                     <div class="py-2">Место учёбы:</div>
                     <div class="py-2">Год поступления:</div>
+                    {% if user.telegram_nick %}
                     <div class="py-2">Телеграм:</div>
+                    {% endif %}
                     <div class="py-2">Курс:</div>
                     <div class="py-2">Группа:</div>
                 </div>
                 <div class="column">
                     <div class="py-2">ВолгГТУ</div>
                     <div class="py-2">2020</div>
+                    {% if user.telegram_nick %}
                     <div class="py-2">{{user.telegram_nick}}</div>
-                    <div class="py-2">4</div>
-                    <div class="py-2">ИСТ-1-20</div>
+                    {% endif %}
+                    <div class="py-2">{{user.course}}</div>
+                    <div class="py-2">{{user.group}}</div>
                 </div>
             </div>
         </div>

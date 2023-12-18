@@ -32,7 +32,8 @@
             {{ project.about_project }}
           </div>
           <div class="content">
-            Руководитель проекта: {{ project.project_admin }}
+            Руководитель проекта: {{ project.project_admin.firstname }} {{ project.project_admin.lastname }}
+                                  {{ project.project_admin.middlename }}
           </div>
         </div>
         <footer class="card-footer">

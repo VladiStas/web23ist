@@ -36,6 +36,9 @@ class User(AbstractBaseUser):
     middlename = models.CharField(max_length=50)
     lastname = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
+    telegram_nick = models.CharField(max_length=50)
+    group = models.CharField(max_length=50)
+    course = models.IntegerField()
     hide_contacts = models.BooleanField()
 
     objects = CustomUserManager()
@@ -59,7 +62,9 @@ class Project(models.Model):
     project_name = models.CharField(max_length=100)
     status = models.CharField(max_length=15)
     about_project = models.CharField(max_length=600)
-    project_admin = models.IntegerField()
+    keywords = models.CharField(max_length=128)
+    project_admin = models.ForeignKey(User, on_delete=models.CASCADE)
+    # FK_projects_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_url(self):
         return reverse('project', kwargs={'project_id': self.pk})
@@ -75,6 +80,14 @@ class Project(models.Model):
         return data
 
 
+class Stacks(models.Model):
+    class Meta:
+        db_table = "stacks"
+        verbose_name = "Дисциплины"
+
+    name = models.CharField(max_length=50)
+
+
 class CompetenceSkillTree(models.Model):
 
     class Meta:
@@ -88,8 +101,6 @@ class UserData(models.Model):
     class Meta:
         db_table = "user"
         verbose_name = "Данные о пользователе"
-
-    # competence = models.ForeignKey(CompetenceSkillTree, on_delete=models.CASCADE)
 
     login = models.CharField(max_length=128)
     firstname = models.CharField(max_length=128)
@@ -120,7 +131,6 @@ class UserData(models.Model):
                 'hide_contacts': course2.hide_contacts,
             })
         return data
-    # user = models.OneToOneField(User, related_name='user_data', on_delete=models.CASCADE)
 
 
 class CompetenceExtracurricularCourses(models.Model):
@@ -166,6 +176,7 @@ class Students(models.Model):
                 'user_id': courseses.user_id
             })
         return data
+
 
 class CompetenceScientificPublications(models.Model):
     class Meta:

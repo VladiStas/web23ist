@@ -10,10 +10,13 @@ from .models import *
 from .forms import UserLoginForm
 import requests
 
+
+# Влад
 class UserLogoutView(LogoutView):
     next_page = 'main'
 
 
+# Данил, Рулсан, Влад
 # TODO Поменять верхний класс на нижний в релизе
 class UserLoginView(SuccessMessageMixin, LoginView):
     form_class = UserLoginForm
@@ -57,6 +60,7 @@ class UserLoginView(SuccessMessageMixin, LoginView):
         return reverse_lazy('main')
 
 
+# Влад
 def main(request):
     return render(request, 'webapp/main.html', {'title': 'Главная'})
 
@@ -73,26 +77,35 @@ def profile_user_settings(request):
     return render(request, 'webapp/user-settings.html', {'title': 'Настройка профиля'})
 
 
+# Андрей
 def search(request):
     return render(request, 'webapp/search.html', {'title': 'Поиск'})
 
 
+# Влад, Илья
 @login_required()
 def projects_template(request):
     data = Project.objects.all()
     return render(request, 'webapp/projects.html', {'data': data, 'title': 'Страница проектов'})
 
 
+# Илья
 @login_required()
 def concrete_project(request, project_id):
     data = Project.objects.get(pk=project_id)
-    #return HttpResponse(f"{project_id}")
-    return render(request, 'webapp/concrete-project.html', {'data': data, 'title': 'Страница проекта'})
+    user_my = User.objects.all()
+    keywords = data.keywords.split(',')
+    return render(request, 'webapp/concrete-project.html', {'data': data,
+                                                            'keyword': keywords,
+                                                            'user': user_my,
+                                                            'title': 'Страница проекта'})
 
 
+# Влад
 def pageNotFound(request, exception):
     return HttpResponseNotFound("Страница не найдена :/")
 
+# Андрей
 def search_view(request):
     query = request.GET.get('query')
     query=query[1:-1]
