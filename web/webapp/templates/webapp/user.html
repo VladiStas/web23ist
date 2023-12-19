@@ -12,10 +12,12 @@
                 <div class="column">
                     <div class="py-2">Почта: </div>
                     <div class="py-2">Телефон:</div>
+                    <div class="py-2">О себе</div>
                 </div>
                 <div class="column">
                     <div class="py-2">{{user.email}}</div>
                     <div class="py-2">{{user.phone_number}}</div>
+                    <div class="py-2">{{user.about_me}}</div>
                 </div>
                 <div class="column">
                     <div class="py-2">Место учёбы:</div>
@@ -27,8 +29,8 @@
                     <div class="py-2">Группа:</div>
                 </div>
                 <div class="column">
-                    <div class="py-2">ВолгГТУ</div>
-                    <div class="py-2">2020</div>
+                    <div class="py-2">{{user.university}}</div>
+                    <div class="py-2">{{user.year}}</div>
                     {% if user.telegram_nick %}
                     <div class="py-2">{{user.telegram_nick}}</div>
                     {% endif %}
@@ -39,16 +41,11 @@
         </div>
         {% if user.id == current_user_id %}
         <div class="column is-one-quarter">
-            <a href="{% url 'settings' %}" class="card-footer-item">Настроить профиль</a>
+            <a href="{% url 'settings' user_id=user.id %}" class="card-footer-item">Настроить профиль</a>
         </div>
         {% endif %}
     </div>
 
-    <div class="columns py-4 px-4">
-        <div class="column">
-            <div class="text">{{user.about_me}}</div>
-        </div>
-    </div>
 
     <div class="row table-row">
         <div class="field has-text-left">

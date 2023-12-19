@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import UserManager, PermissionsMixin
 from django.db import models
 from django.urls import reverse
+from django import forms
 
 
 class CustomUserManager(BaseUserManager):
@@ -23,7 +24,6 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-
     class Meta:
         managed = False
         db_table = "user"
@@ -37,10 +37,13 @@ class User(AbstractBaseUser):
     lastname = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
     telegram_nick = models.CharField(max_length=50)
+    university = models.CharField(max_length=50)
+    year = models.CharField(max_length=50)
     group = models.CharField(max_length=50)
     course = models.IntegerField()
+    phone_number = models.CharField(max_length=50)
+    about_me = models.CharField(max_length=50)
     hide_contacts = models.BooleanField()
-
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'login'
@@ -54,7 +57,6 @@ class User(AbstractBaseUser):
 
 
 class Project(models.Model):
-
     class Meta:
         db_table = "projects"
         verbose_name = "Проекты"
@@ -64,10 +66,12 @@ class Project(models.Model):
     about_project = models.CharField(max_length=600)
     keywords = models.CharField(max_length=128)
     project_admin = models.ForeignKey(User, on_delete=models.CASCADE)
+
     # FK_projects_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_url(self):
         return reverse('project', kwargs={'project_id': self.pk})
+
     @staticmethod
     def get_data_from_db():
         projects = Project.objects.all()
@@ -89,12 +93,22 @@ class Stacks(models.Model):
 
 
 class CompetenceSkillTree(models.Model):
-
     class Meta:
         db_table = "competence_skill_tree"
         verbose_name = "Скиллы"
-
     level_of_knowledge = models.CharField(max_length=128)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    stack = models.ForeignKey(Stacks, on_delete=models.CASCADE)
+
+    @staticmethod
+    def get_data_from_db():
+        skills = CompetenceSkillTree.object.all()
+        data = []
+        for skills in skills:
+            data.append({
+                'level_of_knowledge': skills.level_of_knowledge,
+            })
+        return data
 
 
 class UserData(models.Model):
@@ -102,18 +116,16 @@ class UserData(models.Model):
         db_table = "user"
         verbose_name = "Данные о пользователе"
 
-    login = models.CharField(max_length=128)
-    firstname = models.CharField(max_length=128)
-    middlename = models.CharField(max_length=128)
-    lastname = models.CharField(max_length=128)
-    photo = models.UUIDField()
+    course = models.CharField(max_length=128)
+    group = models.CharField(max_length=128)
     about_me = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=128)
     email = models.CharField(max_length=128)
-    telegram_nick = models.CharField(max_length=128)
-    hide_contacts = models.BooleanField()
-    course = models.CharField(max_length=128)
-    group = models.CharField(max_length=128)
+    university = models.CharField(max_length=128)
+    year = models.CharField(max_length=128)
+
+    def get_url(self):
+        return reverse('settings', kwargs={'user_id': self.pk})
 
     @staticmethod
     def get_data_from_db():
@@ -121,18 +133,13 @@ class UserData(models.Model):
         data = []
         for course2 in courses2:
             data.append({
-                'login': course2.login,
-                'firstname': course2.firstname,
-                'middlename': course2.middlename,
-                'lastname': course2.lastname,
-                'photo': course2.photo,
-                'about_me': course2.about_me,
-                'phone_number': course2.phone_number,
-                'email': course2.email,
-                'telegram_nick': course2.telegram_nick,
-                'hide_contacts': course2.hide_contacts,
                 'course': course2.course,
                 'group': course2.group,
+                'phone_number': course2.phone_number,
+                'email': course2.email,
+                'about_me': course2.about_me,
+                'university': course2.university,
+                'year': course2.year,
             })
         return data
 

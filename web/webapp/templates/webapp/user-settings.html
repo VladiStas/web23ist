@@ -3,6 +3,8 @@
 {% block title %}Settings{% endblock %}
 
 {% block content %}
+<form method="post" action="{% url 'settings' user_id=user.id %}">
+    {% csrf_token %}
 <div class="columns py-6 px-6">
     <div class="column is-one-quarter">
         <img
@@ -11,7 +13,7 @@
         />
       </div>
       <div class="column">
-        <h5 class="title is-2">Иванов Иван Иванович</h5>
+        <h5 class="title is-2">{{user.firstname}} {{user.lastname}} {{user.middlename}}</h5>
         <div class="columns">
           <div class="column">
             <div class="py-2">Почта:</div>
@@ -21,12 +23,16 @@
             <input
             class="input"
             type="email"
+            name = "email_field"
             placeholder="Почта"
+            value="{{ user.email }}"
             />
             <input
             class="input"
             type="text"
+            name = "phone_number_field"
             placeholder="Номер телефона"
+            value="{{ user.phone_number }}"
             />
             </div>
           <div class="column">
@@ -40,12 +46,16 @@
             <input
             class="input"
             type="text"
+            name = "university_field"
             placeholder="Место учёбы"
+            value="{{ user.university }}"
             />
             <input
             class="input"
-            type="text"
+            type="number"
+            name = "year_field"
             placeholder="Год поступления"
+            value="{{ user.year }}"
             />
             <input
             class="input"
@@ -55,12 +65,16 @@
             <input
             class="input"
             type="number"
+            name = "course_field"
             placeholder="Курс"
+            value="{{ user.course }}"
             />
             <input
             class="input"
             type="text"
+            name = "group_field"
             placeholder="Группа"
+            value="{{ user.group }}"
             />
           </div>
         </div>
@@ -68,10 +82,17 @@
 </div>
 <div class="columns py-4 px-4">
     <div class="column">
-        <textarea class="textarea" placeholder="О себе" rows="10"></textarea>      
+            <input
+            class="input"
+            type="text"
+            name = "about_me_field"
+            placeholder="О себе"
+            value="{{ user.about_me }}"
+            />
       </div>
 </div>
 <div class="field has-text-centered">
-  <button class="button enter-button">Сохранить</button>
+  <button type="submit" class="button enter-button">Сохранить</button>
 </div>
+</form>
 {% endblock %}
