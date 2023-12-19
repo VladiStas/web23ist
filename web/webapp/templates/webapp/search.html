@@ -8,33 +8,30 @@
 	{% if show_dropdownStudents %}
 		<div class="columns is-centered">
 			<div class="column is-4">
-				<label for="category">Факультет:</label>
-				<select id="category">
-					<option value="all">Все</option>
-					<option value="category1">ФАиГР</option>
-					<option value="category2">ФСиЖКХ</option>
-					<option value="category3">ФТиСТБ</option>
+				<label for="category">Группа:</label>
+				<select id="category" name="selectedCategory">
+					<option value="allProjects">Все</option>
 				</select>
 			</div>
 			<div class="column is-3">
 				<label for="course">Курс:</label>
 				<select id="course">
-					<option value="all">Все</option>
-					<option value="course1">1</option>
-					<option value="course2">2</option>
-					<option value="course3">3</option>
-					<option value="course4">4</option>
+					<option value="allProjects">Все</option>
 				</select>
 			</div>
 			<div class="column is-3">
 				<label for="technology">Стек технологий:</label>
 				<select id="technology">
-					<option value="all">Все</option>
+					<option value="allProjects">Все</option>
 					<option value="tech1">c++</option>
 					<option value="tech2">python</option>
 					<option value="tech3">java script</option>
 					<option value="tech4">c#</option>
 				</select>
+				<label for="categoryProjects" style="display: none;"></label>
+				<select id="categoryProjects"style="display: none;"></select>
+				<label for="technologyProjects" style="display: none;"></label>
+				<select id="technologyProjects"style="display: none;"></select>
 			</div>
 		</div>
 		<div class="field has-text-centered">
@@ -58,6 +55,12 @@
 					<option value="techProjects3">java script</option>
 					<option value="techProjects4">c#</option>
 				</select>
+				<label for="category" style="display: none;"></label>
+				<select id="category"style="display: none;"></select>
+				<label for="course" style="display: none;"></label>
+				<select id="course"style="display: none;"></select>
+				<label for="technology" style="display: none;"></label>
+				<select id="technology"style="display: none;"></select>
 			</div>
 		</div>
 		<div class="field has-text-centered">
@@ -155,6 +158,12 @@
 								</div>
 							</div>
 							<div class="content">
+								Группа: {{ student.group }}
+							</div>
+							<div class="content">
+								Курс: {{ student.course }}
+							</div>
+							<div class="content">
 								Почта: {{ student.email }}
 							</div>
 						</div>
@@ -213,27 +222,105 @@
 		var query = document.querySelector('#query p').innerText.split(":")[1].trim();
 		var DBName = document.querySelector('#DBName p').innerText.split(":")[1].trim();
 		
+		var selectedCategory = document.getElementById('category').value;
+		var selectedCourse = document.getElementById('course').value;
+		var selectedTechnology = document.getElementById('technology').value;
+		
 		var statusOptions = [];
 		
-		fetch(`/search_view/?selectedCategoryProjects=${selectedCategoryProjects}&selectedTechnologyProjects=${selectedTechnologyProjects}&query=${query}&DBName=${DBName}`)
+		fetch(`/search_view/?selectedCategoryProjects=${selectedCategoryProjects}&selectedTechnologyProjects=${selectedTechnologyProjects}&query=${query}&DBName=${DBName}&selectedCategory=${selectedCategory}&selectedCourse=${selectedCourse}&selectedTechnology=${selectedTechnology}`)
 		.then(response => response.json())
 		.then(data => {
-			statusOptions = data.dataAnProjects.map(project => project.status)
-			.filter((value, index, self) => {
-				return self.indexOf(value) === index;
-			});
-			var selectElement = document.getElementById('categoryProjects');
-			for (var i = 0; i < statusOptions.length; i++) {
-				var option = document.createElement("option");
-				option.value = statusOptions[i];
-				option.text = statusOptions[i];
-				selectElement.appendChild(option);
+			if (data.show_dropdownProjects){
+				statusOptions = data.dataAnProjects.map(project => project.status)
+				.filter((value, index, self) => {
+					return self.indexOf(value) === index;
+				});
+				var selectElement = document.getElementById('categoryProjects');
+				for (var i = 0; i < statusOptions.length; i++) {
+					var option = document.createElement("option");
+					option.value = statusOptions[i];
+					option.text = statusOptions[i];
+					selectElement.appendChild(option);
 				}
+			}
+			else{
+				statusOptions = data.dataAnStudents.map(user => user.group)
+				.filter((value, index, self) => {
+					return self.indexOf(value) === index;
+				});
+				var selectElement = document.getElementById('category');
+				for (var i = 0; i < statusOptions.length; i++) {
+					var option = document.createElement("option");
+					option.value = statusOptions[i];
+					option.text = statusOptions[i];
+					selectElement.appendChild(option);
+				}
+				statusOptions = data.dataAnStudents.map(user => user.course)
+				.filter((value, index, self) => {
+					return self.indexOf(value) === index;
+				});
+				var selectElement = document.getElementById('course');
+				for (var i = 0; i < statusOptions.length; i++) {
+					var option = document.createElement("option");
+					option.value = statusOptions[i];
+					option.text = statusOptions[i];
+					selectElement.appendChild(option);
+				}
+			}
 		});
 	}
 	document.addEventListener("DOMContentLoaded", function() {
 		UnderBox(); 
 	});
+	function applyFilters() {
+		var selectedCategory = document.getElementById('category').value;
+		var selectedCourse = document.getElementById('course').value;
+		var selectedTechnology = document.getElementById('technology').value;
+		var query = document.querySelector('#query p').innerText.split(":")[1].trim();
+		var DBName = document.querySelector('#DBName p').innerText.split(":")[1].trim();
+		
+		var statusOptions = [];
+		fetch(`/search_view/?selectedCategory=${selectedCategory}&selectedCourse=${selectedCourse}&selectedTechnology=${selectedTechnology}&query=${query}&DBName=${DBName}`)
+		.then(response => response.json())
+		.then(data => {
+			var sectionDiv = document.querySelector('.projectSection');
+			sectionDiv.innerHTML = `
+				<div class="section">
+					<div class="columns is-multiline">
+						${data.dataAnStudents.map(user => 
+							`<div class="column is-2">
+								<div class="card">
+									<div class="card-image">
+										<figure class="image is-4by3">
+											<img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
+										</figure>
+									</div>
+									<div class="card-content">
+										<div class="media">
+											<div class="media-left"></div>
+											<div class="media-content">
+												<p class="title is-4">${user.firstname} ${user.middlename} ${user.lastname}</p>
+											</div>
+										</div>
+										<div class="content">
+											Группа: ${user.group}
+										</div>
+										<div class="content">
+											Курс: ${user.course}
+										</div>
+										<div class="content">
+											Почта: ${user.email}
+										</div>
+									</div>
+								</div>
+							</div>`
+						).join('')}
+					</div>
+				</div>
+			`;
+		});
+	}	
     function applyFiltersProjects() {
 		var selectedCategoryProjects = document.getElementById('categoryProjects').value;
 		var selectedTechnologyProjects = document.getElementById('technologyProjects').value;
@@ -282,20 +369,5 @@
 			`;
 		});
     }
-    function applyFilters() {
-		  var selectedCategory = document.getElementById('category').value;
-		  var selectedCourse = document.getElementById('course').value;
-		  var selectedTechnology = document.getElementById('technology').value;
-		
-			fetch('/search_view/')
-			.then(response => response.json())
-			.then(data => {
-			  data.forEach(item => {
-				var dataDiv = document.createElement('div');
-				dataDiv.textContent = 'Данные из базы данных: ' + JSON.stringify(item);
-				document.querySelector('.section').appendChild(dataDiv);
-			  });
-			});
-	}
   </script>
 {% endblock %}

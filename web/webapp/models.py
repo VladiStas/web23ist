@@ -112,6 +112,8 @@ class UserData(models.Model):
     email = models.CharField(max_length=128)
     telegram_nick = models.CharField(max_length=128)
     hide_contacts = models.BooleanField()
+    course = models.CharField(max_length=128)
+    group = models.CharField(max_length=128)
 
     @staticmethod
     def get_data_from_db():
@@ -129,6 +131,8 @@ class UserData(models.Model):
                 'email': course2.email,
                 'telegram_nick': course2.telegram_nick,
                 'hide_contacts': course2.hide_contacts,
+                'course': course2.course,
+                'group': course2.group,
             })
         return data
 

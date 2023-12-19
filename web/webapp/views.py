@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from .forms import UserLoginForm
 import requests
+import json
 
 
 # Влад
@@ -124,10 +125,16 @@ def project_settings(request, project_id_settings):
 def pageNotFound(request, exception):
     return HttpResponseNotFound("Страница не найдена :/")
 
+
 # Андрей
 def search_view(request):
     query = request.GET.get('query')
-    query=query[1:-1]
+    if query:
+        if(len(query)>1):
+            if(query[0]=="\"" and query[-1]=="\""):
+                query=query[1:-1]
+            if(query[-1]==" "):
+                query=query[:-1]
     DBName = request.GET.get('DBName')
     show_dropdownProjects = False
     show_dropdownStudents = False
@@ -139,12 +146,12 @@ def search_view(request):
     selectedCategory = request.GET.get('selectedCategory')
     selectedCourse = request.GET.get('selectedCourse')
     selectedTechnology = request.GET.get('selectedTechnology')
-
+    print(selectedCategoryProjects,selectedTechnologyProjects)
+    print(selectedCategory,selectedCourse,selectedTechnology)
     if(DBName=="projects"):
         dataProject = Project.get_data_from_db() # хранилище данных из БД
         dataAnProjects = []  # создаем пустой список для хранения данных projects
         show_dropdownProjects=True # включаем сортировку для данных
-
         if query:
             for project in dataProject:
                 plum=0
@@ -153,10 +160,12 @@ def search_view(request):
                         dataAnProjects.append(project)  # добавляем данные в dataAnProjects
                         plum=1
         else:
-            print(DBName)
             dataAnProjects = dataProject
         if(selectedTechnologyProjects!=None):
             dataAnProjectsSort=[]
+            for item in dataAnProjects:
+                keys_to_remove = list(item.keys())[-1]  # Получаем последний ключ в словаре
+                item.pop(keys_to_remove)  # Удаляем последний ключ-значение из словаря
             if selectedCategoryProjects != "allProjects":
                 for value in dataAnProjects:
                     if selectedCategoryProjects.lower() in str(value).lower() and (selectedTechnologyProjects.lower() in str(value).lower() or selectedTechnologyProjects=="allProjects"):
@@ -176,6 +185,7 @@ def search_view(request):
                 'dataAnExtracurricular': llo,
                 'dataAnPublications': llo
                 }
+
             else:
                 data = {
                 'query': query,
@@ -187,12 +197,13 @@ def search_view(request):
                 'dataAnExtracurricular': llo,
                 'dataAnPublications': llo
                 }
+            if hasattr(request.user, 'password'):
+                del data['user']
             return JsonResponse(data)
         else:
-            print("_______________________________________")
-            print(dataAnProjects)
-            print("---------------------------------")
-            print("---+---+---+---+---+---+---")
+            #print("_______________________________________")
+            #print(dataAnProjects)
+            #print("---------------------------------")
             return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': dataAnProjects, 'dataAnStudents': llo, 'dataAnExtracurricular': llo, 'dataAnPublications': llo})
     elif(DBName=="competence_extracurricular_courses"):
         dataExtracurricular = CompetenceExtracurricularCourses.get_data_from_db()
@@ -208,20 +219,94 @@ def search_view(request):
             dataAnExtracurricular=dataExtracurricular
         return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': llo, 'dataAnExtracurricular': dataAnExtracurricular, 'dataAnPublications': llo})
     elif(DBName=="students"):
+        class MyJSONEncoder(json.JSONEncoder):
+                def default(self, obj):
+                    d = {}
+                    d['__class__'] = obj.__class__.__name__
+                    d['__module__'] = obj.__module__
+                    d.update(obj.__dict__)
+                    return d
         dataStudents  = UserData.objects.all()
+        #print("---------------------------------")
+        #print(query)
+        #print("---------------------------------")
         dataAnStudents = []
         show_dropdownStudents=True
         if query:
             for students in dataStudents:
                 plum=0
-                for value in students.values():
-                    if query.lower() in str(value).lower() and plum==0:
+                #print("---------------------------------")
+                for key, value in students.__dict__.items():
+                    #print(str(key).lower(), " : ", str(value).lower())
+                    if query.lower() in str(value).lower() and plum == 0:
                         show_dropdownStudents = True
                         dataAnStudents.append(students)
-                        plum=1
+                        plum = 1
         else:
-            dataAnStudents=dataStudents
-        return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': dataAnStudents, 'dataAnExtracurricular': llo, 'dataAnPublications': llo})
+            for students in dataStudents:
+                plum=0
+                for key, value in students.__dict__.items():
+                    if plum == 0:
+                        show_dropdownStudents = True
+                        dataAnStudents.append(students)
+                        plum = 1
+        #selectedCategory
+        #selectedCourse
+        #selectedTechnology
+        if(selectedCategory!=None):
+            dataAnProjects=dataAnStudents
+            dataAnProjectsSort=[]
+            if selectedCategory=="allProjects" and selectedCourse=="allProjects" and selectedTechnology=="allProjects" :
+                data = {
+                'query': query,
+                'DBName': DBName,
+                'show_dropdownProjects': show_dropdownProjects,
+                'show_dropdownStudents': show_dropdownStudents,
+                'dataAnProjects': llo,
+                'dataAnStudents': dataAnProjects,
+                'dataAnExtracurricular': llo,
+                'dataAnPublications': llo
+                }
+            else:
+                abcOf1=[]
+                abcOf2=[]
+                abcOf3=[]
+                for students in dataAnProjects:
+                    plum=0
+                    for key, value in students.__dict__.items():
+                        if plum == 0 and (selectedCategory.lower() in str(value).lower() or selectedCategory=="allProjects") and str(key).lower() == "group":
+                            abcOf1.append(students)
+                            plum = 1
+                for students in dataAnProjects:
+                    plum=0
+                    for key, value in students.__dict__.items():
+                        if plum == 0 and (selectedCourse.lower() in str(value).lower() or selectedCourse=="allProjects") and str(key).lower() == "course":
+                            abcOf2.append(students)
+                            plum = 1
+                for students in dataAnProjects:
+                    plum=0
+                    for key, value in students.__dict__.items():
+                        if plum == 0 and (selectedTechnology.lower() in str(value).lower() or selectedTechnology=="allProjects"):
+                            abcOf3.append(students)
+                            plum = 1
+                for student in dataAnProjects:
+                    if student in abcOf1 and student in abcOf2 and student in abcOf3:
+                        dataAnProjectsSort.append(student)
+                #dataAnProjectsSort
+                data = {
+                'query': query,
+                'DBName': DBName,
+                'show_dropdownProjects': show_dropdownProjects,
+                'show_dropdownStudents': show_dropdownStudents,
+                'dataAnProjects': llo,
+                'dataAnStudents': dataAnProjectsSort,
+                'dataAnExtracurricular': llo,
+                'dataAnPublications': llo
+                }
+            return JsonResponse(data, encoder=MyJSONEncoder)
+            #return JsonResponse(data)
+        else:
+            return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': dataAnStudents, 'dataAnExtracurricular': llo, 'dataAnPublications': llo})
     elif(DBName=="competence_scientific_publications"):
         dataPublications = CompetenceScientificPublications.get_data_from_db()
         dataAnPublications = []
@@ -238,4 +323,3 @@ def search_view(request):
 
 
     return render(request, 'webapp/search.html', {'query': query, 'DBName': DBName, 'show_dropdownProjects': show_dropdownProjects, 'show_dropdownStudents': show_dropdownStudents, 'dataAnProjects': llo, 'dataAnStudents': llo, 'dataAnExtracurricular': llo, 'dataAnPublications': llo})
-
