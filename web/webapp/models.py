@@ -79,7 +79,8 @@ class Project(models.Model):
             'project_name': project.project_name,
             'status': project.status,
             'about_project': project.about_project,
-            'project_admin': project.project_admin
+            'project_admin': project.project_admin,
+            'keywords': project.keywords,
         } for project in projects]
         return data
 
@@ -96,19 +97,9 @@ class CompetenceSkillTree(models.Model):
     class Meta:
         db_table = "competence_skill_tree"
         verbose_name = "Скиллы"
-    level_of_knowledge = models.CharField(max_length=128)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     stack = models.ForeignKey(Stacks, on_delete=models.CASCADE)
-
-    @staticmethod
-    def get_data_from_db():
-        skills = CompetenceSkillTree.object.all()
-        data = []
-        for skills in skills:
-            data.append({
-                'level_of_knowledge': skills.level_of_knowledge,
-            })
-        return data
+    level_of_knowledge = models.CharField(max_length=128)
 
 
 class UserData(models.Model):

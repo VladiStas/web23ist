@@ -60,29 +60,19 @@
                         <th><abbr title="date">Процент знаний</abbr></th>
                     </tr>
                 </thead>
-
+                {% for i in query_result %}
                 <tbody>
+                    {% if i.user__login == user.login %}
                     <tr>
-                        <td>C#</td>
-                        <td>87%</td>
+                        <td>{{i.stack__name}}</td>
+                        <td>{{i.level_of_knowledge}} %</td>
                     </tr>
-                    <tr>
-                        <td>C++</td>
-                        <td>75%</td>
-                    </tr>
-                    <tr>
-                        <td>Python</td>
-                        <td>80%</td>
-                    </tr>
-                    <tr>
-                        <td>Java</td>
-                        <td>60%</td>
-                    </tr>
+                {% endif %}
                 </tbody>
+                {% endfor %}
             </table>
         </div>
     </div>
-
     <div class="row table-row">
         <div class="field has-text-left">
             <h5 id="study" class="title is-3 py-3 px-4">Учебные предметы <button id="addObject">+</button></h5>
@@ -145,25 +135,23 @@
                     <thead>
                         <tr>
                             <th><abbr title="title">Название проекта</abbr></th>
-                            <th><abbr title="date">Дата</abbr></th>
-                            <th><abbr title="link">GitHub</abbr></th>
-                            <th><abbr title="description">Описание проекта</abbr></th>
+                            <th><abbr title="date">Статус</abbr></th>
+                            <th><abbr title="link">О проекте</abbr></th>
+                            <th><abbr title="description">Ключевые слова</abbr></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Умный дом</td>
-                            <td>12.09.2021-27.12.2021</td>
-                            <td>https://github.com/</td>
-                            <td>В данном проекте представлен пример системы Умный дом</td>
-                        </tr>
-                        <tr>
-                            <td>Проект</td>
-                            <td>Дата работы</td>
-                            <td>Ссылка на проект</td>
-                            <td>Краткое описание</td>
-                        </tr>
-                    </tbody>
+                    {% for i in loaded_project %}
+                <tbody>
+                    {% if i.project_admin__login == user.login %}
+                    <tr>
+                        <td>{{i.project_name}}</td>
+                        <td>{{i.status}}</td>
+                        <td>{{i.about_project}}</td>
+                        <td>{{i.keywords}}</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+                {% endfor %}
                 </table>
             </div>
         </div>

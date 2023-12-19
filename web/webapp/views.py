@@ -68,12 +68,21 @@ def main(request):
 
 
 @login_required()
-def user(request, user_id, project_id):
+def user(request, user_id):
         user_my = User.objects.get(pk=user_id)
-        skill_tree = CompetenceSkillTree.objects.get(pk=project_id)
-        query_result = User.objects.select_related('competence_skill_tree')
+        query_result = CompetenceSkillTree.objects.select_related('user').select_related('stack').values('user__login',
+                                                                                                         'stack__name',
+                                                                                                         'level_of_knowledge')
+        loaded_project = Project.objects.select_related('project_admin').values('project_admin__login',
+                                                                        'project_name',
+                                                                        'status',
+                                                                        'about_project',
+                                                                        'keywords')
+
         return render(request, 'webapp/user.html', {'user': user_my,
                                                     'title': 'Мой профиль',
+                                                    'query_result': query_result,
+                                                    'loaded_project': loaded_project,
                                                     'current_user_id': request.user.id})
 
 
