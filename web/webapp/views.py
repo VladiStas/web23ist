@@ -44,8 +44,9 @@ class UserLoginView(SuccessMessageMixin, LoginView):
 
         if response1.status_code == 200:
             new_user = User.objects.get(login=username)
-            new_user.password = make_password(password)
-            new_user.save()
+            if new_user.password == None:
+                new_user.password = make_password(password)
+                new_user.save()
 
         return super().post(request, *args, **kwargs)
 
