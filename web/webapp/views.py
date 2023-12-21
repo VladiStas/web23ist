@@ -135,6 +135,31 @@ def add_skill(request, user_id):
     stacks = Stacks.objects.all()
     return render(request, 'webapp/add_skill.html', {'stacks': stacks, 'user_id': user_id})
 
+
+def add_course(request, user_id):
+    name = request.POST.get('name')
+    organize = request.POST.get('organize')
+    dock = request.POST.get('dock')
+    if request.method == 'POST':
+        competence_skill = CompetenceExtracurricularCourses(user_id=user_id,name = name, organisation = organize, certificate_number = dock)
+        competence_skill.save()
+        return redirect('user', user_id=user_id)
+    return render(request, 'webapp/add_course.html', {'user_id': user_id})
+
+
+def add_project(request, user_id):
+    if request.method == 'POST':
+        project = request.POST.get('project_name')
+        status = request.POST.get('status')
+        about = request.POST.get('about_project')
+        keywords = request.POST.get('keywords')
+        projecting = Project(project_admin_id= user_id, project_name= project, status= status, about_project= about, keywords=keywords)
+        projecting.save()
+        return redirect('user', user_id=user_id)
+    projects = Project.objects.all()
+    return render(request, 'webapp/add_project.html', {'projects': projects, 'user_id': user_id})
+
+
 # Андрей
 def search(request):
     return render(request, 'webapp/search.html', {'title': 'Поиск'})
