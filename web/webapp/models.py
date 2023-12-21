@@ -44,6 +44,7 @@ class User(AbstractBaseUser):
     course = models.IntegerField()
     phone_number = models.CharField(max_length=50)
     about_me = models.CharField(max_length=50)
+    faculty = models.CharField(max_length=50)
     hide_contacts = models.BooleanField()
     objects = CustomUserManager()
 

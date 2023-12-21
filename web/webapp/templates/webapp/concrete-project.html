@@ -29,21 +29,21 @@
                     <tbody>
                         <tr>
                             <th>Команда</th>
-                            <td>Ольга, Олег, Даша, маша, аня, алексис</td>
+                            <td>Ольга, Олег, Даша, Маша, Аня, Алексис</td>
                         </tr>
                         <tr>
                             <th>Информация об участниках</th>
                             <td><strong>Тимлид:</strong> {{ data.project_admin.firstname }} {{ data.project_admin.lastname }}
-                                  {{ data.project_admin.middlename }} <strong>Дизайн:</strong> Даша, <strong>Код:</strong> Аня</td>
+                                  {{ data.project_admin.middlename }} <strong>Дизайн:</strong> Даша <strong>Код:</strong> Аня</td>
                         </tr>
                         <tr>
                             <th>Статус</th>
                             <td>{{data.status}}</td>
                         </tr>
                     </tbody>
-                </table>    
+                </table>
             </div>
-            
+
         </div>
 <style>
  body {
@@ -59,7 +59,8 @@
     .box{
         min-width: 500px;
         min-height: 200px;
-		
+        box-shadow: none
+
     }
     .authorization-panel{
         padding-top: 150px;
@@ -74,7 +75,7 @@
    background-size:cover;
    width:100%;
    border-radius: 0;
-   height:calc(100% - 10px);
+   height:calc(100% - 500px);
 }
 </style>
 {% endblock %}

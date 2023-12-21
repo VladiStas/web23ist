@@ -1,28 +1,4 @@
-<html class="has-background-grey-lighter">
-<style>
- body {
-    background: linear-gradient(#FFFFFF, #195ae02b); /* Замените #FFA500 на цвет, который вы хотите использовать */
-    margin: 0; /* Убираем отступы по умолчанию */
-    padding: 0; /* Убираем внутренние отступы по умолчанию */
-    width: 100%; /* Растягиваем по ширине на 100% экрана */
-    height: 100vh; /* Растягиваем по высоте на 100% высоты экрана */
-	}
-	.custom-padding {
-            padding: 30px; /* Измените значение отступа по своему усмотрению */
-        }
-    .box{
-        min-width: 500px;
-        min-height: 200px;
-		
-    }
-    .authorization-panel{
-        padding-top: 150px;
-    }
-    .enter-button{
-        background-color: #427cf329;
-        width: 100px;
-    }
-</style>
+<html>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -34,7 +10,7 @@
     <div class="navbar-brand">
         <a class="navbar-item ">
             <img src="http://istvstu.ru/img/svg/logo-header.svg" class="nav__logo-image" width="65" height="74"
-                alt="Logo">
+                 alt="Logo">
             <div class="tekst_sverhu_kartinki">Кафедра ЦТУАС</div>
         </a>
         <!--TODO: JINJA сюда              -->
@@ -48,48 +24,58 @@
                 href="{% url 'projects' %}"
         >Проекты</a
         >
-        
+
     </div>
     <div class="navbar-end">
-		<div class="navbar-item">
-			 <div class="field">
-				<div class="control">
-					<div class="dropdown">
-						<input
-								class="input input-field"
-								type="search"
-								name="query"
-								placeholder="Поиск"
-								id="query"
-								onkeypress="searchProjects(event)"
-						/>
-						<div class="dropdown-content">
-							<h1>Выберите нужный фильтр по желанию</h1>
-								<div> 
-									<div><label class="checkbox"><input type="radio" name="status" value="students"> Студент</label></div>
-									<div><label class="checkbox"><input type="radio" name="status" value="projects"> Проект</label></div>
-									<div><label class="checkbox"><input type="radio" name="status" value="competence_extracurricular_courses"> Дополнительные курсы</label></div>
-									<div><label class="checkbox"><input type="radio" name="status" value="competence_scientific_publications"> Научные публикации</label></div>
-							  </div>
-						</div>
-					</div>
-				</div>
-			 </div>
-		</div>
+        <div class="navbar-item">
+            <div class="field">
+                <div class="control">
+                    <div class="dropdown">
+                        <input
+                                class="input input-field"
+                                type="search"
+                                name="query"
+                                placeholder="Поиск"
+                                id="query"
+                                onkeypress="searchProjects(event)"
+                        />
+                        <div class="dropdown-content">
+                            <h1>Выберите нужный фильтр по желанию</h1>
+                            <div>
+                                <div><label class="checkbox"><input type="radio" name="status" value="students"> Студент</label>
+                                </div>
+                                <div><label class="checkbox"><input type="radio" name="status" value="projects"> Проект</label>
+                                </div>
+                                <div><label class="checkbox"><input type="radio" name="status"
+                                                                    value="competence_extracurricular_courses">
+                                    Дополнительные курсы</label></div>
+                                <div><label class="checkbox"><input type="radio" name="status"
+                                                                    value="competence_scientific_publications"> Научные
+                                    публикации</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <ul class="navbar-item">
             <!--TODO: JINJA сюда              -->
-			 {% if request.user.is_authenticated %}
-            <li class="profile-href has-text-black"><a href="{% url 'user' request.user.id %}">{{request.user.login}}</a></li>
-        </div>
-        <div class="navbar-item ">
-            <!--TODO: JINJA сюда              -->
+            {% if request.user.is_authenticated %}
+            <li class="profile-href has-text-black">
+                <a href="{% url 'user' request.user.id %}">{{request.user.login}}</a>
+            </li>
+
+
+            <div class="navbar-item ">
+                <!--TODO: JINJA сюда              -->
                 <img class="is-rounded" src="https://img.icons8.com/?size=80&id=sTe2gqf95B1e&format=png"
                      alt="Фото пользователя">
-            </a>
-			 <li class="nav-item has-text-black"><a href="{% url 'logout' %}" class="nav-link">Выход</a></li>
-			{% else %}
-			 <li class="nav-item has-text-black"><a href="{% url 'login' %}" class="nav-link">Войти</a></li>
-        {% endif %}
+
+                <li class="nav-item has-text-black"><a href="{% url 'logout' %}" class="nav-link">Выход</a></li>
+                {% else %}
+                <li class="nav-item has-text-black"><a href="{% url 'login' %}" class="nav-link">Войти</a></li>
+                {% endif %}
+            </div>
         </ul>
     </div>
 </nav>
@@ -107,21 +93,17 @@
 		//var DBName = "competence_extracurricular_courses";
 		//var DBName = "students";
 		//var DBName = "competence_scientific_publications";
-		
+
 		var url = `/search_view/?query=${query}&DBName=${DBName}`;
 		window.location.href = url; // Переход на страницу поиска с учетом введенного запроса
 	}
   }
- </script>
-</html>
-<style>
- body {
 
-    background: linear-gradient(#FFFFFF, #195ae02b); /* Замените #FFA500 на цвет, который вы хотите использовать */
-    margin: 0; /* Убираем отступы по умолчанию */
-    padding: 0; /* Убираем внутренние отступы по умолчанию */
-    width: 100%; /* Растягиваем по ширине на 100% экрана */
-    min-height: 100vh; /* Растягиваем по высоте на 100% высоты экрана */
+</script>
+</html>
+<style type="text/css">
+ html {
+    background: linear-gradient(#FFFFFF, #195ae02b);
 	}
   .input-field {
     width: 500px;
@@ -159,21 +141,20 @@
     .dropdown-content div,
     .dropdown-content a {
       display: block;
-      
-    }
-	    /* Уровень 1 элементы */
-    .dropdown-content > div {
-      padding: 4px 0;
-    }
 
-    /* Уровень 2 элементы */
-    .dropdown-content > div > div {
-      padding-left: 20px; /* Отступ слева для вложенных элементов */
     }
-	
-	.enter-button{
-        background-color: #427cf329;
-        width: 150px;
+    .project-card{
+        display: grid;
+        flex: auto;
+        height: 100%;
     }
+    .project-name{
 
+    }
+    .card-footer{
+        align-self: flex-end;
+    }
+    .div{
+        display: flex;
+    }
 </style>

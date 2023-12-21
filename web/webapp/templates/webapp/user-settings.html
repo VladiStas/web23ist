@@ -38,9 +38,9 @@
           <div class="column">
             <div class="py-2">Место учёбы:</div>
             <div class="py-2">Год поступления:</div>
-            <div class="py-2">Факультет:</div>
             <div class="py-2">Курс:</div>
             <div class="py-2">Группа:</div>
+            <div class="py-2">Факультет:</div>
           </div>
           <div class="column">
             <input
@@ -70,6 +70,13 @@
             name = "group_field"
             placeholder="Группа"
             value="{{ user.group }}"
+            />
+            <input
+            class="input"
+            type="text"
+            name = "faculty_field"
+            placeholder="Факультет"
+            value="{{ user.faculty }}"
             />
           </div>
         </div>

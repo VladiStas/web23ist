@@ -1,48 +1,55 @@
 {% extends 'webapp/base.html' %}
 
+
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
 
+<!-- Раздел контента -->
 <div class="section">
-  <div class="columns is-multiline is-mobile">
-    {% for project in data %}
-    <div class="column is-full-mobile is-half-tablet is-one-third-desktop is-one-third-widescreen">
-      <div class="card">
-        <div class="card-image">
-          <figure class="image is-128x128">
-            <img
-              src="https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/00/ee/98/00ee98e2-267a-bd1e-9b40-922261b56143/AppIcon-0-0-85-220-4-2x-0-0.png/1200x630bb.png"
-              alt="Placeholder image" />
-          </figure>
-        </div>
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left"></div>
-            <div class="media-content">
-              <p class="title is-4">{{ project.project_name }}</p>
+    <div class="columns is-multiline">
+        {% for project in data %}
+        <div class="column is-3">
+            <div class="card project-card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img
+                                src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg"
+                                alt="Placeholder image"
+                        />
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content project-name pb-2">
+                            <p class="title is-4">{{project.project_name}}</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        {{project.status}}
+                    </div>
+                    <div class="content">
+                        {{ project.about_project }}
+                    </div>
+                    <div class="content">
+                        Руководитель проекта: {{ project.project_admin.firstname }} {{ project.project_admin.lastname }}
+                        {{ project.project_admin.middlename }}
+                    </div>
+                </div>
+
+                <footer class="card-footer">
+                    <a href="{{ project.get_url }}" class="card-footer-item">Подробнее</a>
+                </footer>
+
             </div>
-          </div>
 
-          <div class="content">
-            {{ project.status }}
-          </div>
-
-          <div class="content">
-            {{ project.about_project }}
-          </div>
-          <div class="content">
-            Руководитель проекта: {{ project.project_admin.firstname }} {{ project.project_admin.lastname }}
-                                  {{ project.project_admin.middlename }}
-          </div>
         </div>
-        <footer class="card-footer">
-          <a href="{{ project.get_url }}" class="card-footer-item">Подробнее</a>
-        </footer>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</div>
 
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
+
+
+

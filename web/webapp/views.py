@@ -101,8 +101,9 @@ def user(request, user_id):
 
 
 #Даниил
+@login_required()
 def profile_user_settings(request, user_id):
-    data = UserData.objects.get(pk=user_id)
+    data = User.objects.get(pk=user_id)
     if request.method == 'POST':
         phone_number = request.POST.get('phone_number_field')
         email = request.POST.get('email_field')
@@ -111,6 +112,7 @@ def profile_user_settings(request, user_id):
         about_me = request.POST.get('about_me_field')
         university = request.POST.get('university_field')
         year = request.POST.get('year_field')
+        faculty = request.POST.get('faculty_field')
         data.phone_number = phone_number
         data.email = email
         data.course = course
@@ -118,12 +120,14 @@ def profile_user_settings(request, user_id):
         data.about_me = about_me
         data.university = university
         data.year = year
+        data.faculty = faculty
 
         data.save()
         return redirect('user', user_id=user_id)  # Изменил параметр на user_id
     return render(request, 'webapp/user-settings.html', {'data': data, 'title': 'Настройка профиля'})
 
 
+@login_required()
 def add_skill(request, user_id):
     if request.method == 'POST':
         stack = request.POST.get('stack')
@@ -136,6 +140,7 @@ def add_skill(request, user_id):
     return render(request, 'webapp/add_skill.html', {'stacks': stacks, 'user_id': user_id})
 
 
+@login_required()
 def add_course(request, user_id):
     name = request.POST.get('name')
     organize = request.POST.get('organize')
@@ -147,6 +152,7 @@ def add_course(request, user_id):
     return render(request, 'webapp/add_course.html', {'user_id': user_id})
 
 
+@login_required()
 def add_project(request, user_id):
     if request.method == 'POST':
         project = request.POST.get('project_name')
@@ -161,6 +167,7 @@ def add_project(request, user_id):
 
 
 # Андрей
+@login_required()
 def search(request):
     return render(request, 'webapp/search.html', {'title': 'Поиск'})
 

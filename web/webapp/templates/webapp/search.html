@@ -80,7 +80,7 @@
 		<div class="columns is-multiline">
 			{% for project in dataAnProjects %}
 				<div class="column is-2">
-					<div class="card">
+					<div class="card project-card">
 						<div class="card-image">
 							<figure class="image is-4by3">
 								<img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
@@ -107,12 +107,12 @@
 				</div>
 			{% endfor %}
 		</div>
-		
-		
+
+
 		<div class="columns is-multiline">
 			{% for extracurricular in dataAnExtracurricular %}
 				<div class="column is-2">
-					<div class="card">
+					<div class="card project-card">
 						<div class="card-image">
 							<figure class="image is-4by3">
 								<img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
@@ -139,12 +139,12 @@
 				</div>
 			{% endfor %}
 		</div>
-	  
-	  
+
+
 		<div class="columns is-multiline">
 			{% for student in dataAnStudents %}
 				<div class="column is-2">
-					<div class="card">
+					<div class="card project-card">
 						<div class="card-image">
 							<figure class="image is-4by3">
 								<img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
@@ -174,12 +174,12 @@
 				</div>
 			{% endfor %}
 		</div>
-		
-		
+
+
 		<div class="columns is-multiline">
 			{% for student in dataAnPublications %}
 				<div class="column is-2">
-					<div class="card">
+					<div class="card project-card">
 						<div class="card-image">
 							<figure class="image is-4by3">
 								<img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
@@ -212,7 +212,7 @@
 				</div>
 			{% endfor %}
 		</div>
-	</div>	
+	</div>
 </div>
 
 <script>
@@ -221,13 +221,13 @@
 		var selectedTechnologyProjects = document.getElementById('technologyProjects').value;
 		var query = document.querySelector('#query p').innerText.split(":")[1].trim();
 		var DBName = document.querySelector('#DBName p').innerText.split(":")[1].trim();
-		
+
 		var selectedCategory = document.getElementById('category').value;
 		var selectedCourse = document.getElementById('course').value;
 		var selectedTechnology = document.getElementById('technology').value;
-		
+
 		var statusOptions = [];
-		
+
 		fetch(`/search_view/?selectedCategoryProjects=${selectedCategoryProjects}&selectedTechnologyProjects=${selectedTechnologyProjects}&query=${query}&DBName=${DBName}&selectedCategory=${selectedCategory}&selectedCourse=${selectedCourse}&selectedTechnology=${selectedTechnology}`)
 		.then(response => response.json())
 		.then(data => {
@@ -271,7 +271,7 @@
 		});
 	}
 	document.addEventListener("DOMContentLoaded", function() {
-		UnderBox(); 
+		UnderBox();
 	});
 	function applyFilters() {
 		var selectedCategory = document.getElementById('category').value;
@@ -279,7 +279,7 @@
 		var selectedTechnology = document.getElementById('technology').value;
 		var query = document.querySelector('#query p').innerText.split(":")[1].trim();
 		var DBName = document.querySelector('#DBName p').innerText.split(":")[1].trim();
-		
+
 		var statusOptions = [];
 		fetch(`/search_view/?selectedCategory=${selectedCategory}&selectedCourse=${selectedCourse}&selectedTechnology=${selectedTechnology}&query=${query}&DBName=${DBName}`)
 		.then(response => response.json())
@@ -288,9 +288,9 @@
 			sectionDiv.innerHTML = `
 				<div class="section">
 					<div class="columns is-multiline">
-						${data.dataAnStudents.map(user => 
+						${data.dataAnStudents.map(user =>
 							`<div class="column is-2">
-								<div class="card">
+								<div class="card project-card">
 									<div class="card-image">
 										<figure class="image is-4by3">
 											<img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />
@@ -320,15 +320,15 @@
 				</div>
 			`;
 		});
-	}	
+	}
     function applyFiltersProjects() {
 		var selectedCategoryProjects = document.getElementById('categoryProjects').value;
 		var selectedTechnologyProjects = document.getElementById('technologyProjects').value;
 		var query = document.querySelector('#query p').innerText.split(":")[1].trim();
 		var DBName = document.querySelector('#DBName p').innerText.split(":")[1].trim();
-		
+
 		var statusOptions = [];
-		
+
 		fetch(`/search_view/?selectedCategoryProjects=${selectedCategoryProjects}&selectedTechnologyProjects=${selectedTechnologyProjects}&query=${query}&DBName=${DBName}`)
 		.then(response => response.json())
 		.then(data => {
@@ -336,9 +336,9 @@
 			sectionDiv.innerHTML = `
 				<div class="section">
 					<div class="columns is-multiline">
-						${data.dataAnProjects.map(project => 
+						${data.dataAnProjects.map(project =>
 							`<div class="column is-2">
-								<div class="card">
+								<div class="card project-card">
 									<div class="card-image">
 										<figure class="image is-4by3">
 											<img src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612935315_80-p-fon-abstraktsiya-geometriya-krasnii-98.jpg" alt="Placeholder image" />

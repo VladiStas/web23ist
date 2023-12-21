@@ -1,187 +1,184 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
+    {% csrf_token %}
+    <div class="columns py-6 px-6">
+        <img src="https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png" alt="Фото пользователя" class="column is-one-quarter" />
 
-{% csrf_token %}
-<div class="columns py-6 px-6">
-    <img src="https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png" alt="Фото пользователя"
-         class="column is-one-quarter"/>
-    <div class="column">
-        <h5 class="title is-2">{{user.firstname}} {{user.lastname}} {{user.middlename}} </h5>
-        <div class="columns">
-            <div class="column">
-                <div class="py-2">Почта:</div>
-                <div class="py-2">Телефон:</div>
-                <div class="py-2">О себе</div>
-            </div>
-            <div class="column">
-                <div class="py-2">{{user.email}}</div>
-                <div class="py-2">{{user.phone_number}}</div>
-                <div class="py-2">{{user.about_me}}</div>
-            </div>
-            <div class="column">
-                <div class="py-2">Место учёбы:</div>
-                <div class="py-2">Год поступления:</div>
-                {% if user.telegram_nick %}
-                <div class="py-2">Телеграм:</div>
-                {% endif %}
-                <div class="py-2">Курс:</div>
-                <div class="py-2">Группа:</div>
-            </div>
-            <div class="column">
-                <div class="py-2">{{user.university}}</div>
-                <div class="py-2">{{user.year}}</div>
-                {% if user.telegram_nick %}
-                <div class="py-2">{{user.telegram_nick}}</div>
-                {% endif %}
-                <div class="py-2">{{user.course}}</div>
-                <div class="py-2">{{user.group}}</div>
+        <div class="column">
+            <h5 class="title is-2">{{user.firstname}} {{user.lastname}} {{user.middlename}} </h5>
+            <div class="columns">
+                <div class="column">
+                    <div class="py-2">Почта: </div>
+                    <div class="py-2">Телефон:</div>
+                    <div class="py-2">О себе</div>
+                </div>
+                <div class="column">
+                    <div class="py-2">{{user.email}}</div>
+                    <div class="py-2">{{user.phone_number}}</div>
+                    <div class="py-2">{{user.about_me}}</div>
+                </div>
+                <div class="column">
+                    <div class="py-2">Место учёбы:</div>
+                    <div class="py-2">Год поступления:</div>
+                    {% if user.telegram_nick %}
+                    <div class="py-2">Телеграм:</div>
+                    {% endif %}
+                    <div class="py-2">Факультет:</div>
+                    <div class="py-2">Курс:</div>
+                    <div class="py-2">Группа:</div>
+                </div>
+                <div class="column">
+                    <div class="py-2">{{user.university}}</div>
+                    <div class="py-2">{{user.year}}</div>
+                    {% if user.telegram_nick %}
+                    <div class="py-2">{{user.telegram_nick}}</div>
+                    {% endif %}
+                    <div class="py-2">{{user.faculty}}</div>
+                    <div class="py-2">{{user.course}}</div>
+                    <div class="py-2">{{user.group}}</div>
+                </div>
             </div>
         </div>
-    </div>
-    {% if user.id == current_user_id %}
-    <div class="column is-one-quarter">
-        <a href="{% url 'settings' user_id=user.id %}" class="card-footer-item">Настроить профиль</a>
-    </div>
-    {% endif %}
-</div>
-
-<div class="row table-row">
-    <div class="field has-text-left">
-        <h5 id="skills" class="title is-3 py-3 px-4">Скиллы
-            <form action="{% url 'add_skill' user_id=user.id %}" method="GET">
-                <button type="submit">
-                    +
-                </button>
-            </form>
-        </h5>
-    </div>
-</div>
-
-<div class="profile-tabels columns is-left">
-    <table class="table study-obj is-bordered is-centered">
-        <thead>
-        <tr>
-            <th><abbr title="title">Скилл</abbr></th>
-            <th><abbr title="date">Процент знаний</abbr></th>
-        </tr>
-        </thead>
-        {% for i in query_result %}
-        <tbody>
-        {% if i.user__login == user.login %}
-        <tr>
-            <td>{{i.stack__name}}</td>
-            <td>{{i.level_of_knowledge}} %</td>
-        </tr>
+        {% if user.id == current_user_id %}
+        <form method="post">
+            <div class="column is-one-quarter">
+                <a href="{% url 'settings' user_id=user.id %}" class="card-footer-item">Настроить профиль</a>
+            </div>
+        </form>
         {% endif %}
-        </tbody>
-        {% endfor %}
-    </table>
-</div>
-</div>
-<div class="row table-row">
-    <div class="field has-text-left">
-        <h5 id="study" class="title is-3 py-3 px-4">Учебные предметы
-            <button id="addObject">+</button>
-        </h5>
     </div>
 
-    <div class="profile-tabels columns is-left">
-        <table class="table study-obj1 is-centered">
-            <thead>
-            <tr>
-                <th><abbr title="title">Работа</abbr></th>
-                <th><abbr title="score has-text-centered">Оценка преподавателя</abbr></th>
-                <th><abbr title="my-score">Самостоятельная оценка</abbr></th>
-            </tr>
-            </thead>
 
-            <tbody>
-            <tr>
-                <td>Работа 1</td>
-                <td>90</td>
-                <td>Интересно</td>
-            </tr>
-            <tr>
-                <td>Работа 2</td>
-                <td>80</td>
-                <td>Неинтересно</td>
-            </tr>
-            <tr>
-                <td>Работа 3</td>
-                <td>76</td>
-                <td>Неинтересно</td>
-            </tr>
-            <tr>
-                <td>Работа 4</td>
-                <td>100</td>
-                <td>Неинтересно</td>
-            </tr>
-            <tr>
-                <td>Работа 5</td>
-                <td>98</td>
-                <td>Интересно</td>
-            </tr>
-            <tr>
-                <td>Работа 6</td>
-                <td>85</td>
-                <td>Интересно</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="rows">
     <div class="row table-row">
-        <div class="field has-text-left">
-            <h5 id="project" class="title is-3 py-3 px-4">Участие в проектах
-                <form action="{% url 'add_project' user_id=user.id %}" method="GET">
-                    <button type="submit">
-                        +
-                    </button>
+        <div class="columns px-4 ">
+                <h5 id="skills" class="title is-3 px-4">Скиллы</h5>
+                <form  action="{% url 'add_skill' user_id=user.id %}" method="GET">
+                        <button class="button is-2 px-4" type="submit">
+                            +
+                        </button>
                 </form>
-            </h5>
         </div>
 
         <div class="profile-tabels columns is-left">
-            <table class="table is-bordered study-obj2 is-centered">
+            <table class="table study-obj is-bordered is-centered">
                 <thead>
-                <tr>
-                    <th><abbr title="title">Название проекта</abbr></th>
-                    <th><abbr title="date">Статус</abbr></th>
-                    <th><abbr title="link">О проекте</abbr></th>
-                    <th><abbr title="description">Ключевые слова</abbr></th>
-                </tr>
+                    <tr>
+                        <th><abbr title="title">Скилл</abbr></th>
+                        <th><abbr title="date">Процент знаний</abbr></th>
+                    </tr>
                 </thead>
-                {% for i in loaded_project %}
+                {% for i in query_result %}
                 <tbody>
-                {% if i.project_admin__login == user.login %}
-                <tr>
-                    <td>{{i.project_name}}</td>
-                    <td>{{i.status}}</td>
-                    <td>{{i.about_project}}</td>
-                    <td>{{i.keywords}}</td>
-                </tr>
+                    {% if i.user__login == user.login %}
+                    <tr>
+                        <td>{{i.stack__name}}</td>
+                        <td>{{i.level_of_knowledge}} %</td>
+                    </tr>
                 {% endif %}
                 </tbody>
                 {% endfor %}
             </table>
         </div>
     </div>
-
     <div class="row table-row">
+        <div class="columns px-4 pt-6">
+            <h5 id="study" class="title is-3 px-4">Учебные предметы</h5>
+            <button class="button is-2 px-4" id="addObject">+</button>
+        </div>
+
+        <div class="profile-tabels columns is-left">
+            <table class="table study-obj1 is-centered">
+                <thead>
+                    <tr>
+                        <th><abbr title="title">Работа</abbr></th>
+                        <th><abbr title="score has-text-centered">Оценка преподавателя</abbr></th>
+                        <th><abbr title="my-score">Самостоятельная оценка</abbr></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Работа 1</td>
+                        <td>90</td>
+                        <td>Интересно</td>
+                    </tr>
+                    <tr>
+                        <td>Работа 2</td>
+                        <td>80</td>
+                        <td>Неинтересно</td>
+                    </tr>
+                    <tr>
+                        <td>Работа 3</td>
+                        <td>76</td>
+                        <td>Неинтересно</td>
+                    </tr>
+                    <tr>
+                        <td>Работа 4</td>
+                        <td>100</td>
+                        <td>Неинтересно</td>
+                    </tr>
+                    <tr>
+                        <td>Работа 5</td>
+                        <td>98</td>
+                        <td>Интересно</td>
+                    </tr>
+                    <tr>
+                        <td>Работа 6</td>
+                        <td>85</td>
+                        <td>Интересно</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="rows">
         <div class="row table-row">
-            <div class="field has-text-left">
-                <h5 id="course" class="title is-3 py-3 px-4">Пройденные курсы
-                    <form action="{% url 'add_course' user_id=user.id %}" method="GET">
-                        <button type="submit">
+            <div class="columns px-4 pt-6">
+                <h5 id="project" class="title is-3 px-4">Участие в проектах</h5>
+                <form  action="{% url 'add_project' user_id=user.id %}" method="GET">
+                        <button class="button is-2 px-4" type="submit">
                             +
                         </button>
-                    </form>
-                </h5>
+                </form>
             </div>
 
+            <div class="profile-tabels columns is-left">
+                <table class="table is-bordered study-obj2 is-centered">
+                    <thead>
+                        <tr>
+                            <th><abbr title="title">Название проекта</abbr></th>
+                            <th><abbr title="date">Статус</abbr></th>
+                            <th><abbr title="link">О проекте</abbr></th>
+                            <th><abbr title="description">Ключевые слова</abbr></th>
+                        </tr>
+                    </thead>
+                    {% for i in loaded_project %}
+                <tbody>
+                    {% if i.project_admin__login == user.login %}
+                    <tr>
+                        <td>{{i.project_name}}</td>
+                        <td>{{i.status}}</td>
+                        <td>{{i.about_project}}</td>
+                        <td>{{i.keywords}}</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="row table-row">
+            <div class="columns px-4 pt-6">
+                <h5 id="course" class="title is-3 px-4">Пройденные курсы</h5>
+                <form  action="{% url 'add_course' user_id=user.id %}" method="GET">
+                        <button class="button is-2 px-4" type="submit">
+                            +
+                        </button>
+                </form>
+            </div>
             <div class="profile-tabels columns is-left">
                 <table class="table study-obj3 is-bordered is-centered">
                     <thead>
@@ -236,15 +233,9 @@
             </ol>
         </div>
     </div>
-    {% endblock %}
-    <style>
-    body {
-    background: linear-gradient(#FFFFFF, #195ae02b); /* Замените #FFA500 на цвет, который вы хотите использовать */
-    margin: 0; /* Убираем отступы по умолчанию */
-    padding: 0; /* Убираем внутренние отступы по умолчанию */
-    width: 100%; /* Растягиваем по ширине на 100% экрана */
-    height: 100%; /* Растягиваем по высоте на 100% высоты экрана */
-	}
+
+<style>
+
   .input-field {
     width: 500px;
   }
@@ -276,5 +267,5 @@
   .study-obj3 {
     min-width: 100%;
   }
-
-    </style>
+</style>
+{% endblock %}
