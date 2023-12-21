@@ -124,9 +124,21 @@ def profile_user_settings(request, user_id):
     return render(request, 'webapp/user-settings.html', {'data': data, 'title': 'Настройка профиля'})
 
 
+def add_skill(request, user_id):
+    if request.method == 'POST':
+        stack = request.POST.get('stack')
+        print(stack)
+        level = request.POST.get('level_of_knowledge')
+        competence_skill = CompetenceSkillTree(user_id = user_id,stack_id = stack, level_of_knowledge= level)
+        competence_skill.save()
+        return redirect('user', user_id=user_id)
+    stacks = Stacks.objects.all()
+    return render(request, 'webapp/add_skill.html', {'stacks': stacks, 'user_id': user_id})
+
 # Андрей
 def search(request):
     return render(request, 'webapp/search.html', {'title': 'Поиск'})
+
 
 
 # Влад, Илья
@@ -143,7 +155,10 @@ def concrete_project(request, project_id):
     keywords = data.keywords.split(',')
     return render(request, 'webapp/concrete-project.html', {'data': data,
                                                             'keyword': keywords,
+
                                                             'title': 'Страница проекта'})
+
+
 @login_required()
 @csrf_exempt
 def project_settings(request, project_id_settings):

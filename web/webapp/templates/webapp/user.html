@@ -1,7 +1,7 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
-<form method="post">
+
     {% csrf_token %}
     <div class="columns py-6 px-6">
         <img src="https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png" alt="Фото пользователя" class="column is-one-quarter" />
@@ -45,11 +45,17 @@
         {% endif %}
     </div>
 
-
     <div class="row table-row">
         <div class="field has-text-left">
-            <h5 id="skills" class="title is-3 py-3 px-4">Скиллы <button id="addSkill">+</button></h5>
+                <h5 id="skills" class="title is-3 py-3 px-4">Скиллы
+                    <form action="{% url 'add_skill' user_id=user.id %}" method="GET">
+                    <button type="submit">
+                        +
+                    </button>
+                    </form>
+                </h5>
         </div>
+    </div>
 
         <div class="profile-tabels columns is-left">
             <table class="table study-obj is-bordered is-centered">
@@ -214,7 +220,6 @@
             </ol>
         </div>
     </div>
-</form>
 {% endblock %}
 <style>
     body {

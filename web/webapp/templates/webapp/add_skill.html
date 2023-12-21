@@ -1,0 +1,41 @@
+{% extends 'webapp/base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'add_skill' user_id=user.id %}">
+    {% csrf_token %}
+<div class="columns py-6 px-6">
+      <div class="column">
+
+        <h5 class="title is-2">{{user.firstname}} {{user.lastname}} {{user.middlename}}</h5>
+        <div class="columns">
+          <div class="column">
+            <div class="py-2">Почта:</div>
+            <div class="py-2">Телефон:</div>
+          </div>
+          <div class="column">
+            <select name="stack">
+              {% for i in stacks %}
+              <option value="{{i.id}}" name="{{i.id}}">{{i.name}}</option>
+              {% endfor %}
+            </select>
+            <input
+              class="input"
+              type="number"
+              name="level_of_knowledge"
+              placeholder="Процент скилла"
+              min="0"
+              max="100"
+              required
+              />
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="field has-text-centered">
+  <button type="submit" class="button enter-button">Сохранить</button>
+</div>
+</form>
+{% endblock %}
