@@ -4,31 +4,32 @@
 
 {% block content %}
 
-  <div class="authorization-panel columns is-centered">
+<div class="authorization-panel columns is-centered pt-6">
     <form class="box is-justify-content-center" method="post">
         {% csrf_token %}
-        <div class="field has-text-centered">
-            <h5 class="title is-4 py-3">Войти с помощью</h5>
+        <div class="field has-text-centered login-field">
+            <h5 class="title is-4 py-4">Войти с помощью ЭИОС</h5>
         </div>
-        <div class="hero-foot">
-<nav class="tabs is-boxed is-fullwidth">
-  <div class="container">
-    <ul>
-      <li class="is-active">
-        <a>ЭИОС</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-</div>
-        <div class="field">
-            <div class="control">
-                {{ form.as_p }}
+        <div class="columns">
+            <div class="column">
             </div>
+            <div class="column">
+                <div class="field has-text-left">
+                    <div class="control">
+                        {{ form.as_p }}
+                    </div>
+                </div>
+            </div>
+            <div class="column"></div>
         </div>
-        <div class="field has-text-centered">
+        <div class="field has-text-centered pt-4">
             <button class="button enter-button">Вход</button>
         </div>
     </form>
-  </div>
+</div>
+<style type="text/css">
+    .box{
+     min-width: 400px;
+    }
+</style>
 {% endblock %}
