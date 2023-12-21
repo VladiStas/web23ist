@@ -35,6 +35,7 @@ class User(AbstractBaseUser):
     firstname = models.CharField(max_length=50)
     middlename = models.CharField(max_length=50)
     lastname = models.CharField(max_length=50)
+    photo = models.BinaryField(null=True, editable=True)
     email = models.CharField(max_length=50)
     telegram_nick = models.CharField(max_length=50)
     university = models.CharField(max_length=50)
@@ -140,7 +141,7 @@ class CompetenceExtracurricularCourses(models.Model):
         db_table = "competence_extracurricular_courses"
         verbose_name = "Дополнительные курсы компетенции"
 
-    user_id = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     organisation = models.CharField(max_length=200)
     certificate_number = models.CharField(max_length=100)
@@ -189,7 +190,7 @@ class CompetenceScientificPublications(models.Model):
     year_of_issue = models.IntegerField()
     publication_level = models.CharField(max_length=50)
     journal = models.CharField(max_length=150)
-    authors = models.CharField(max_length=150)
+    authors = models.ForeignKey(User, on_delete=models.CASCADE)
 
     @staticmethod
     def get_data_from_db():

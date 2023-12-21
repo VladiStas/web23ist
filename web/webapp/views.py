@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
-from .forms import UserLoginForm
+from .forms import *
 import requests
 
 
@@ -79,11 +79,23 @@ def user(request, user_id):
                                                                         'status',
                                                                         'about_project',
                                                                         'keywords')
+        publications = CompetenceScientificPublications.objects.select_related('authors').values('name',
+                                                                                                 'year_of_issue',
+                                                                                                 'publication_level',
+                                                                                                 'journal',
+                                                                                                 'authors')
+
+        courses = CompetenceExtracurricularCourses.objects.select_related('user').values('user',
+                                                                                         'name',
+                                                                                         'organisation',
+                                                                                         'certificate_number',)
 
         return render(request, 'webapp/user.html', {'user': user_my,
                                                     'title': 'Мой профиль',
                                                     'query_result': query_result,
                                                     'loaded_project': loaded_project,
+                                                    'loaded_publications': publications,
+                                                    'loaded_courses': courses,
                                                     'current_user_id': request.user.id})
 
 
@@ -105,6 +117,7 @@ def profile_user_settings(request, user_id):
         data.about_me = about_me
         data.university = university
         data.year = year
+
         data.save()
         return redirect('user', user_id=user_id)  # Изменил параметр на user_id
     return render(request, 'webapp/user-settings.html', {'data': data, 'title': 'Настройка профиля'})

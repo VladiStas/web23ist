@@ -5,7 +5,6 @@
     {% csrf_token %}
     <div class="columns py-6 px-6">
         <img src="https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png" alt="Фото пользователя" class="column is-one-quarter" />
-      
         <div class="column">
             <h5 class="title is-2">{{user.firstname}} {{user.lastname}} {{user.middlename}} </h5>
             <div class="columns">
@@ -166,21 +165,20 @@
                     <thead>
                         <tr>
                             <th><abbr title="title">Название курса</abbr></th>
-                            <th><abbr title="date">Дата</abbr></th>
-                            <th><abbr title="certificate">Сертификат</abbr></th>
+                            <th><abbr title="date">Организация</abbr></th>
+                            <th><abbr title="certificate">Подтверждающий документ</abbr></th>
                         </tr>
                     </thead>
                     <tbody>
+                    {% for course in loaded_courses %}
+                        {% if course.user == user.id %}
                         <tr>
-                            <td>Изучение Pyton для чайников</td>
-                            <td>22.03.2022-22.09.2022</td>
-                            <td>*ПДФ-файл*</td>
+                            <td>{{course.name}}</td>
+                            <td>{{course.organisation}}</td>
+                            <td>{{course.certificate_number}}</td>
                         </tr>
-                        <tr>
-                            <td>Курс</td>
-                            <td>Дата прохождения</td>
-                            <td>Сертификат об обучении</td>
-                        </tr>
+                        {% endif %}
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -193,20 +191,16 @@
         </div>
         <div class="content">
             <ol type="1">
+                {% for publication in loaded_publications %}
+                    {% if publication.authors == user.id %}
                 <li>
-                    Литвенкова И.А. Экология городской среды: урбоэкология. Издательство
-                    УО «ВГУ им.ю П.М.Машерова», 2005. 163 с.
+                    {{publication.name}}. Год публикации -
+                    {{publication.year_of_issue}}. Журнал -
+                    {{publication.journal}}.
+                    {{publication.publication_level}}
                 </li>
-                <li>
-                    Байтелова А. И., Гарицкая М. Ю., Чекмарева О. В. Экологические
-                    особенности городской среды. 2012. 216 с.
-                </li>
-                <li>
-                    Ле Минь Туан, Шукуров И.С., Гельманова М.О., Слесарев М.Ю. расчет
-                    интенсивности теплового острова в мегаполисах с помощью
-                    моделирования в программе ENVI-met // Вестник МГСУ. 2020. Т. 15.
-                    Вып. 9. С. 1262–1273.
-                </li>
+                    {% endif %}
+                {% endfor %}
             </ol>
         </div>
         <div class="field has-text-left">
