@@ -108,16 +108,18 @@ class UserData(models.Model):
         db_table = "user"
         verbose_name = "Данные о пользователе"
 
-    course = models.CharField(max_length=128)
-    group = models.CharField(max_length=128)
+    login = models.CharField(max_length=128)
+    firstname = models.CharField(max_length=128)
+    middlename = models.CharField(max_length=128)
+    lastname = models.CharField(max_length=128)
+    photo = models.UUIDField()
     about_me = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=128)
     email = models.CharField(max_length=128)
-    university = models.CharField(max_length=128)
-    year = models.CharField(max_length=128)
-
-    def get_url(self):
-        return reverse('settings', kwargs={'user_id': self.pk})
+    telegram_nick = models.CharField(max_length=128)
+    hide_contacts = models.BooleanField()
+    course = models.CharField(max_length=128)
+    group = models.CharField(max_length=128)
 
     @staticmethod
     def get_data_from_db():
@@ -125,13 +127,18 @@ class UserData(models.Model):
         data = []
         for course2 in courses2:
             data.append({
-                'course': course2.course,
-                'group': course2.group,
+                'login': course2.login,
+                'firstname': course2.firstname,
+                'middlename': course2.middlename,
+                'lastname': course2.lastname,
+                'photo': course2.photo,
+                'about_me': course2.about_me,
                 'phone_number': course2.phone_number,
                 'email': course2.email,
-                'about_me': course2.about_me,
-                'university': course2.university,
-                'year': course2.year,
+                'telegram_nick': course2.telegram_nick,
+                'hide_contacts': course2.hide_contacts,
+                'course': course2.course,
+                'group': course2.group,
             })
         return data
 
