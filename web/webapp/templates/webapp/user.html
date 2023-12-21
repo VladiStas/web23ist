@@ -1,10 +1,11 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
-
+<form method="post">
     {% csrf_token %}
     <div class="columns py-6 px-6">
         <img src="https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png" alt="Фото пользователя" class="column is-one-quarter" />
+      
         <div class="column">
             <h5 class="title is-2">{{user.firstname}} {{user.lastname}} {{user.middlename}} </h5>
             <div class="columns">
@@ -24,6 +25,7 @@
                     {% if user.telegram_nick %}
                     <div class="py-2">Телеграм:</div>
                     {% endif %}
+                    <div class="py-2">Факультет:</div>
                     <div class="py-2">Курс:</div>
                     <div class="py-2">Группа:</div>
                 </div>
@@ -33,6 +35,7 @@
                     {% if user.telegram_nick %}
                     <div class="py-2">{{user.telegram_nick}}</div>
                     {% endif %}
+                    <div class="py-2">Фаигр</div>
                     <div class="py-2">{{user.course}}</div>
                     <div class="py-2">{{user.group}}</div>
                 </div>
@@ -45,17 +48,12 @@
         {% endif %}
     </div>
 
+
     <div class="row table-row">
-        <div class="field has-text-left">
-                <h5 id="skills" class="title is-3 py-3 px-4">Скиллы
-                    <form action="{% url 'add_skill' user_id=user.id %}" method="GET">
-                    <button type="submit">
-                        +
-                    </button>
-                    </form>
-                </h5>
+        <div class="columns px-4 ">
+                <h5 id="skills" class="title is-3 px-4">Скиллы</h5>
+                <button class="button is-2 px-4" id="addSkill">+</button>
         </div>
-    </div>
 
         <div class="profile-tabels columns is-left">
             <table class="table study-obj is-bordered is-centered">
@@ -79,8 +77,9 @@
         </div>
     </div>
     <div class="row table-row">
-        <div class="field has-text-left">
-            <h5 id="study" class="title is-3 py-3 px-4">Учебные предметы <button id="addObject">+</button></h5>
+        <div class="columns px-4 pt-6">
+            <h5 id="study" class="title is-3 px-4">Учебные предметы</h5>
+            <button class="button is-2 px-4" id="addObject">+</button>
         </div>
 
         <div class="profile-tabels columns is-left">
@@ -131,8 +130,9 @@
 
     <div class="rows">
         <div class="row table-row">
-            <div class="field has-text-left">
-                <h5 id="project" class="title is-3 py-3 px-4">Участие в проектах <button id="addProject">+</button></h5>
+            <div class="columns px-4 pt-6">
+                <h5 id="project" class="title is-3 px-4">Участие в проектах</h5>
+                <button class="button is-2 px-4" id="addProject">+</button>
             </div>
 
             <div class="profile-tabels columns is-left">
@@ -162,29 +162,30 @@
         </div>
 
         <div class="row table-row">
-            <div class="field has-text-left">
-                <h5 id="course" class="title is-3 py-3 px-4">Пройденные курсы <button id="addCourse">+</button></h5>
+            <div class="columns px-4 pt-6">
+                <h5 id="course" class="title is-3 px-4">Пройденные курсы</h5>
+                <button class="button is-2 px-4" id="addCourse">+</button>
             </div>
-
             <div class="profile-tabels columns is-left">
                 <table class="table study-obj3 is-bordered is-centered">
                     <thead>
                         <tr>
                             <th><abbr title="title">Название курса</abbr></th>
-                            <th><abbr title="date">Организация</abbr></th>
-                            <th><abbr title="certificate">Подтверждающий документ</abbr></th>
+                            <th><abbr title="date">Дата</abbr></th>
+                            <th><abbr title="certificate">Сертификат</abbr></th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for course in loaded_courses %}
-                        {% if course.user == user.id %}
                         <tr>
-                            <td>{{course.name}}</td>
-                            <td>{{course.organisation}}</td>
-                            <td>{{course.certificate_number}}</td>
+                            <td>Изучение Pyton для чайников</td>
+                            <td>22.03.2022-22.09.2022</td>
+                            <td>*ПДФ-файл*</td>
                         </tr>
-                        {% endif %}
-                    {% endfor %}
+                        <tr>
+                            <td>Курс</td>
+                            <td>Дата прохождения</td>
+                            <td>Сертификат об обучении</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -197,16 +198,20 @@
         </div>
         <div class="content">
             <ol type="1">
-                {% for publication in loaded_publications %}
-                    {% if publication.authors == user.id %}
                 <li>
-                    {{publication.name}}. Год публикации -
-                    {{publication.year_of_issue}}. Журнал -
-                    {{publication.journal}}.
-                    {{publication.publication_level}}
+                    Литвенкова И.А. Экология городской среды: урбоэкология. Издательство
+                    УО «ВГУ им.ю П.М.Машерова», 2005. 163 с.
                 </li>
-                    {% endif %}
-                {% endfor %}
+                <li>
+                    Байтелова А. И., Гарицкая М. Ю., Чекмарева О. В. Экологические
+                    особенности городской среды. 2012. 216 с.
+                </li>
+                <li>
+                    Ле Минь Туан, Шукуров И.С., Гельманова М.О., Слесарев М.Ю. расчет
+                    интенсивности теплового острова в мегаполисах с помощью
+                    моделирования в программе ENVI-met // Вестник МГСУ. 2020. Т. 15.
+                    Вып. 9. С. 1262–1273.
+                </li>
             </ol>
         </div>
         <div class="field has-text-left">
@@ -220,15 +225,10 @@
             </ol>
         </div>
     </div>
-{% endblock %}
+</form>
+
 <style>
-    body {
-    background: linear-gradient(#FFFFFF, #195ae02b); /* Замените #FFA500 на цвет, который вы хотите использовать */
-    margin: 0; /* Убираем отступы по умолчанию */
-    padding: 0; /* Убираем внутренние отступы по умолчанию */
-    width: 100%; /* Растягиваем по ширине на 100% экрана */
-    height: 100%; /* Растягиваем по высоте на 100% высоты экрана */
-	}
+
   .input-field {
     width: 500px;
   }
@@ -261,3 +261,4 @@
     min-width: 100%;
   }
 </style>
+{% endblock %}
